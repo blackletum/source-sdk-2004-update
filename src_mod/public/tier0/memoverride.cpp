@@ -218,6 +218,82 @@ int __cdecl _heapwalk( _HEAPINFO * )
 }
 #endif
 
+#if _MSC_VER >= 1400
+//-----------------------------------------------------------------------------
+// Heap entry points of the VS2005+ static CRT (LIBCMT.lib), needed by the VS2013 build.
+// The CRT's own allocation objects (heapinit, crtheap, malloc, calloc, recalloc, expand, msize ...) are
+// only kept out of the link when EVERY symbol they define that other CRT code references is defined in
+// this file. One missing symbol (_crtheap, _calloc_crt ...) pulls the whole CRT object in, and it then
+// collides with the functions defined here: LNK2005 "__heap_init already defined in memoverride.obj".
+// Same set of functions as Valve's 2013 SDK memoverride.cpp.
+//-----------------------------------------------------------------------------
+#define ALLOC_CALL _CRTNOALIAS _CRTRESTRICT
+
+void *_calloc_base( size_t nCount, size_t nSize )
+{
+	if ( nSize && nCount > (size_t)-1 / nSize )
+		return NULL;
+	size_t nBytes = nCount * nSize;
+	void *pMem = AllocUnattributed( nBytes );
+	if ( pMem )
+		memset( pMem, 0, nBytes );
+	return pMem;
+}
+
+// like realloc, but the bytes beyond the old size of the block are zeroed
+void *_recalloc_base( void *pMem, size_t nCount, size_t nSize )
+{
+	if ( nSize && nCount > (size_t)-1 / nSize )
+		return NULL;
+	size_t nBytes = nCount * nSize;
+	size_t nOldBytes = pMem ? g_pMemAlloc->GetSize( pMem ) : 0;
+	void *pMemOut = ReallocUnattributed( pMem, nBytes );
+	if ( pMemOut && nBytes > nOldBytes )
+		memset( (char *)pMemOut + nOldBytes, 0, nBytes - nOldBytes );
+	return pMemOut;
+}
+
+void *__cdecl _expand_base( void *pMem, size_t nNewSize )
+{
+	return g_pMemAlloc->Expand( pMem, nNewSize );
+}
+
+size_t _msize_base( void *pMem )
+{
+	return g_pMemAlloc->GetSize( pMem );
+}
+
+// allocation functions the CRT uses for its own data (locks, locale, stdio streams, thread data ...)
+void *__cdecl _malloc_crt( size_t nSize )
+{
+	return AllocUnattributed( nSize );
+}
+
+void *__cdecl _calloc_crt( size_t nCount, size_t nSize )
+{
+	return _calloc_base( nCount, nSize );
+}
+
+void *__cdecl _realloc_crt( void *pMem, size_t nSize )
+{
+	return ReallocUnattributed( pMem, nSize );
+}
+
+void *__cdecl _recalloc_crt( void *pMem, size_t nCount, size_t nSize )
+{
+	return _recalloc_base( pMem, nCount, nSize );
+}
+
+ALLOC_CALL void *__cdecl _recalloc( void *pMem, size_t nCount, size_t nSize )
+{
+	return _recalloc_base( pMem, nCount, nSize );
+}
+
+// the CRT heap handle; _heap_init() / _heap_term() (below) never create or destroy a real heap, but this must not be NULL
+HANDLE _crtheap = (HANDLE)1;
+int __active_heap = 1;
+#endif // _MSC_VER >= 1400
+
 } // end extern "C"
 
 
@@ -402,7 +478,7 @@ size_t __cdecl _msize_dbg( void *pMem, int nBlockUse )
 
 #ifdef _WIN32
 
-#if defined(_DEBUG) && _MSC_VER >= 1300
+#if defined(_DEBUG) && _MSC_VER >= 1300 && _MSC_VER < 1400	// VS2005+: see the aligned functions at the end of this file
 void    __cdecl _aligned_free_base(
         void *
         );
@@ -552,12 +628,343 @@ int __cdecl _CrtDbgReport( int nRptType, const char * szFile,
 {
 	static char output[1024];
 	va_list args;
-	va_start( args, szFormat );
-	_vsnprintf( output, sizeof( output )-1, szFormat, args );
-	va_end( args );
+	if ( szFormat )
+	{
+		va_start( args, szFormat );
+		_vsnprintf( output, sizeof( output )-1, szFormat, args );
+		va_end( args );
+	}
+	else
+	{
+		output[0] = 0;
+	}
 
 	return g_pMemAlloc->CrtDbgReport( nRptType, szFile, nLine, szModule, output );
 }
+
+#if defined(_DEBUG) && _MSC_VER >= 1400
+//-----------------------------------------------------------------------------
+// Debug counterpart of the VS2005+ block near the top of this file, for the static DEBUG runtime (LIBCMTD.lib)
+// of the VS2013 build. Its dbgheap / dbgrpt / align objects are only kept out of the link when every symbol they
+// define that other runtime code references is defined here; otherwise they collide with the functions above
+// (LNK2005). Same set of functions as Valve's 2013 SDK memoverride.cpp, except that the aligned allocations work
+// (Valve stubs out the offset variants) and _recalloc_dbg keeps the contents of the block.
+//-----------------------------------------------------------------------------
+#define FREE_CALL _CRTNOALIAS
+
+void *__cdecl _calloc_dbg_impl( size_t nNum, size_t nSize, int nBlockUse, const char *szFileName, int nLine, int *errno_tmp )
+{
+	return _calloc_dbg( nNum, nSize, nBlockUse, szFileName, nLine );
+}
+
+// like realloc, but the bytes beyond the old size of the block are zeroed
+void *__cdecl _recalloc_dbg( void *pMem, size_t nCount, size_t nSize, int nBlockUse, const char *szFileName, int nLine )
+{
+	AttribIfCrt();
+	if ( nSize && nCount > (size_t)-1 / nSize )
+		return NULL;
+	size_t nBytes = nCount * nSize;
+	size_t nOldBytes = pMem ? g_pMemAlloc->GetSize( pMem ) : 0;
+	void *pMemOut = g_pMemAlloc->Realloc( pMem, nBytes, szFileName, nLine );
+	if ( pMemOut && nBytes > nOldBytes )
+		memset( (char *)pMemOut + nOldBytes, 0, nBytes - nOldBytes );
+	return pMemOut;
+}
+
+void *__cdecl _heap_alloc_base( size_t nSize )
+{
+	return AllocUnattributed( nSize );
+}
+
+void *__cdecl _heap_alloc_dbg( size_t nSize, int nBlockUse, const char *szFileName, int nLine )
+{
+	return _heap_alloc( nSize );
+}
+
+void __cdecl _free_nolock( void *pMem )
+{
+	_free_dbg( pMem, 0 );
+}
+
+void __cdecl _free_dbg_nolock( void *pMem, int nBlockUse )
+{
+	_free_dbg( pMem, 0 );
+}
+
+// accessors of the variables defined above
+int *__cdecl __p__crtDbgFlag( void )
+{
+	return &_crtDbgFlag;
+}
+
+long *__cdecl __p__crtBreakAlloc( void )
+{
+	return &_crtBreakAlloc;
+}
+
+_CRT_ALLOC_HOOK __cdecl _CrtGetAllocHook( void )
+{
+	return NULL;
+}
+
+_CRT_DUMP_CLIENT __cdecl _CrtGetDumpClient( void )
+{
+	return NULL;
+}
+
+_CRT_REPORT_HOOK __cdecl _CrtGetReportHook( void )
+{
+	return NULL;
+}
+
+size_t __crtDebugFillThreshold = 0;
+
+size_t __cdecl _CrtSetDebugFillThreshold( size_t nNewDebugFillThreshold )
+{
+	size_t nOld = __crtDebugFillThreshold;
+	__crtDebugFillThreshold = nNewDebugFillThreshold;
+	return nOld;
+}
+
+int __crtDebugCheckCount = FALSE;
+
+int __cdecl _CrtSetCheckCount( int fCheckCount )
+{
+	int nOld = __crtDebugCheckCount;
+	return nOld;
+}
+
+int __cdecl _CrtGetCheckCount( void )
+{
+	return __crtDebugCheckCount;
+}
+
+int __cdecl _CrtReportBlockType( const void *pUserData )
+{
+	return 0;
+}
+
+// the runtime reports its own assertion failures through these; we do not use them
+int __cdecl __crtMessageWindowW( int nRptType, const wchar_t *szFile, const wchar_t *szLine,
+								 const wchar_t *szModule, const wchar_t *szUserMessage )
+{
+	Assert( 0 );
+	return 0;
+}
+
+int __cdecl _CrtDbgReportV( int nRptType, const wchar_t *szFile, int nLine,
+							const wchar_t *szModule, const wchar_t *szFormat, va_list arglist )
+{
+	Assert( 0 );
+	return 0;
+}
+
+int __cdecl _CrtDbgReportW( int nRptType, const wchar_t *szFile, int nLine,
+							const wchar_t *szModule, const wchar_t *szFormat, ... )
+{
+	Assert( 0 );
+	return 0;
+}
+
+int __cdecl _VCrtDbgReportA( int nRptType, const wchar_t *szFile, int nLine,
+							 const wchar_t *szModule, const wchar_t *szFormat, va_list arglist )
+{
+	Assert( 0 );
+	return 0;
+}
+
+int __cdecl _CrtSetReportHook2( int mode, _CRT_REPORT_HOOK pfnNewHook )
+{
+	_CrtSetReportHook( pfnNewHook );
+	return 0;
+}
+
+//-----------------------------------------------------------------------------
+// Aligned allocations on top of the allocator. Same block layout as the runtime's own align.c: the address of the
+// real allocation is stored in the pointer-sized slot just in front of the (gap adjusted) aligned address.
+//-----------------------------------------------------------------------------
+static void *AlignedOffsetMalloc( size_t nSize, size_t nAlign, size_t nOffset )
+{
+	if ( nAlign == 0 || ( nAlign & ( nAlign - 1 ) ) != 0 )	// must be a power of two
+		return NULL;
+	if ( nOffset != 0 && nOffset >= nSize )
+		return NULL;
+
+	nAlign = ( nAlign > sizeof( void * ) ? nAlign : sizeof( void * ) ) - 1;
+	// bytes needed to round the offset up to pointer alignment
+	uintptr_t nGap = ( 0 - nOffset ) & ( sizeof( void * ) - 1 );
+
+	uintptr_t ptr = (uintptr_t)AllocUnattributed( sizeof( void * ) + nGap + nAlign + nSize );
+	if ( !ptr )
+		return NULL;
+
+	uintptr_t retptr = ( ( ptr + sizeof( void * ) + nGap + nAlign + nOffset ) & ~nAlign ) - nOffset;
+	( (uintptr_t *)( retptr - nGap ) )[-1] = ptr;
+	return (void *)retptr;
+}
+
+static void *AlignedRealBlock( void *pMem )
+{
+	uintptr_t ptr = ( (uintptr_t)pMem & ~( sizeof( void * ) - 1 ) ) - sizeof( void * );
+	return *( (void **)ptr );
+}
+
+static void AlignedFree( void *pMem )
+{
+	if ( pMem )
+		g_pMemAlloc->Free( AlignedRealBlock( pMem ) );
+}
+
+// number of bytes of the block that can be read from pMem
+static size_t AlignedUsableSize( void *pMem )
+{
+	void *pReal = AlignedRealBlock( pMem );
+	return g_pMemAlloc->GetSize( pReal ) - ( (uintptr_t)pMem - (uintptr_t)pReal );
+}
+
+static void *AlignedOffsetRealloc( void *pMem, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	if ( !pMem )
+		return AlignedOffsetMalloc( nSize, nAlign, nOffset );
+	if ( nSize == 0 )
+	{
+		AlignedFree( pMem );
+		return NULL;
+	}
+
+	void *pNew = AlignedOffsetMalloc( nSize, nAlign, nOffset );
+	if ( !pNew )
+		return NULL;
+	size_t nOld = AlignedUsableSize( pMem );
+	memcpy( pNew, pMem, nOld < nSize ? nOld : nSize );
+	AlignedFree( pMem );
+	return pNew;
+}
+
+// like realloc, but the bytes beyond the old size of the block are zeroed
+static void *AlignedOffsetRecalloc( void *pMem, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	size_t nOld = pMem ? AlignedUsableSize( pMem ) : 0;
+	void *pNew = AlignedOffsetRealloc( pMem, nSize, nAlign, nOffset );
+	if ( pNew && nSize > nOld )
+		memset( (char *)pNew + nOld, 0, nSize - nOld );
+	return pNew;
+}
+
+// aligned base
+ALLOC_CALL void *__cdecl _aligned_malloc_base( size_t nSize, size_t nAlign )
+{
+	return AlignedOffsetMalloc( nSize, nAlign, 0 );
+}
+
+ALLOC_CALL void *__cdecl _aligned_realloc_base( void *pMem, size_t nSize, size_t nAlign )
+{
+	return AlignedOffsetRealloc( pMem, nSize, nAlign, 0 );
+}
+
+ALLOC_CALL void *__cdecl _aligned_recalloc_base( void *pMem, size_t nSize, size_t nAlign )
+{
+	return AlignedOffsetRecalloc( pMem, nSize, nAlign, 0 );
+}
+
+FREE_CALL void __cdecl _aligned_free_base( void *pMem )
+{
+	AlignedFree( pMem );
+}
+
+// aligned offset base
+ALLOC_CALL void *__cdecl _aligned_offset_malloc_base( size_t nSize, size_t nAlign, size_t nOffset )
+{
+	return AlignedOffsetMalloc( nSize, nAlign, nOffset );
+}
+
+ALLOC_CALL void *__cdecl _aligned_offset_realloc_base( void *pMem, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	return AlignedOffsetRealloc( pMem, nSize, nAlign, nOffset );
+}
+
+ALLOC_CALL void *__cdecl _aligned_offset_recalloc_base( void *pMem, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	return AlignedOffsetRecalloc( pMem, nSize, nAlign, nOffset );
+}
+
+// aligned
+ALLOC_CALL void *__cdecl _aligned_malloc( size_t nSize, size_t nAlign )
+{
+	return _aligned_malloc_base( nSize, nAlign );
+}
+
+ALLOC_CALL void *__cdecl _aligned_realloc( void *pMem, size_t nSize, size_t nAlign )
+{
+	return _aligned_realloc_base( pMem, nSize, nAlign );
+}
+
+ALLOC_CALL void *__cdecl _aligned_recalloc( void *pMem, size_t nCount, size_t nSize, size_t nAlign )
+{
+	if ( nSize && nCount > (size_t)-1 / nSize )
+		return NULL;
+	return _aligned_recalloc_base( pMem, nCount * nSize, nAlign );
+}
+
+FREE_CALL void __cdecl _aligned_free( void *pMem )
+{
+	_aligned_free_base( pMem );
+}
+
+// aligned offset
+ALLOC_CALL void *__cdecl _aligned_offset_malloc( size_t nSize, size_t nAlign, size_t nOffset )
+{
+	return _aligned_offset_malloc_base( nSize, nAlign, nOffset );
+}
+
+ALLOC_CALL void *__cdecl _aligned_offset_realloc( void *pMem, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	return _aligned_offset_realloc_base( pMem, nSize, nAlign, nOffset );
+}
+
+ALLOC_CALL void *__cdecl _aligned_offset_recalloc( void *pMem, size_t nCount, size_t nSize, size_t nAlign, size_t nOffset )
+{
+	if ( nSize && nCount > (size_t)-1 / nSize )
+		return NULL;
+	return _aligned_offset_recalloc_base( pMem, nCount * nSize, nAlign, nOffset );
+}
+
+// aligned debug
+void *__cdecl _aligned_malloc_dbg( size_t nSize, size_t nAlign, const char *szFileName, int nLine )
+{
+	return _aligned_malloc( nSize, nAlign );
+}
+
+void *__cdecl _aligned_realloc_dbg( void *pMem, size_t nSize, size_t nAlign, const char *szFileName, int nLine )
+{
+	return _aligned_realloc( pMem, nSize, nAlign );
+}
+
+void *__cdecl _aligned_recalloc_dbg( void *pMem, size_t nCount, size_t nSize, size_t nAlign, const char *szFileName, int nLine )
+{
+	return _aligned_recalloc( pMem, nCount, nSize, nAlign );
+}
+
+void *__cdecl _aligned_offset_malloc_dbg( size_t nSize, size_t nAlign, size_t nOffset, const char *szFileName, int nLine )
+{
+	return _aligned_offset_malloc( nSize, nAlign, nOffset );
+}
+
+void *__cdecl _aligned_offset_realloc_dbg( void *pMem, size_t nSize, size_t nAlign, size_t nOffset, const char *szFileName, int nLine )
+{
+	return _aligned_offset_realloc( pMem, nSize, nAlign, nOffset );
+}
+
+void *__cdecl _aligned_offset_recalloc_dbg( void *pMem, size_t nCount, size_t nSize, size_t nAlign, size_t nOffset, const char *szFileName, int nLine )
+{
+	return _aligned_offset_recalloc( pMem, nCount, nSize, nAlign, nOffset );
+}
+
+void __cdecl _aligned_free_dbg( void *pMem )
+{
+	_aligned_free( pMem );
+}
+#endif // defined(_DEBUG) && _MSC_VER >= 1400
 
 	
 } // end extern "C"

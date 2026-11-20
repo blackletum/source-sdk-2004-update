@@ -295,7 +295,7 @@ void Templates_StartUniqueInstance( void )
 	g_iCurrentTemplateInstance++;
 
 	// Make sure there's enough room to fit it into the string
-	int iMax = pow(10, (strlen(ENTITYIO_FIXUP_STRING)-1));	// -1 for the &
+	int iMax = pow(10.0f, (int)(strlen(ENTITYIO_FIXUP_STRING)-1));	// -1 for the &
 	if ( g_iCurrentTemplateInstance >= iMax )
 	{
 		// We won't hit this.

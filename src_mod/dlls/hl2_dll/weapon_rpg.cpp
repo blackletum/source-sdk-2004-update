@@ -147,10 +147,10 @@ void CMissile::Spawn( void )
 	SetModel("models/weapons/w_missile_launch.mdl");
 	UTIL_SetSize( this, -Vector(4,4,4), Vector(4,4,4) );
 
-	SetTouch( MissileTouch );
+	SetTouch( &CMissile::MissileTouch );
 
 	SetMoveType( MOVETYPE_FLYGRAVITY, MOVECOLLIDE_FLY_BOUNCE );
-	SetThink( IgniteThink );
+	SetThink( &CMissile::IgniteThink );
 	
 	SetNextThink( gpGlobals->curtime + 0.3f );
 	SetDamage( 200.0f );
@@ -253,7 +253,7 @@ void CMissile::AccelerateThink( void )
 	AngleVectors( GetLocalAngles(), &vecForward );
 	SetAbsVelocity( vecForward * RPG_SPEED );
 
-	SetThink( SeekThink );
+	SetThink( &CMissile::SeekThink );
 	SetNextThink( gpGlobals->curtime + 0.1f );
 }
 
@@ -308,7 +308,7 @@ void CMissile::ShotDown( void )
 		m_hRocketTrail->m_bDamaged = true;
 	}
 
-	SetThink( AugerThink );
+	SetThink( &CMissile::AugerThink );
 	SetNextThink( gpGlobals->curtime );
 	m_flAugerTime = gpGlobals->curtime + 1.5f;
 	m_flMarkDeadTime = gpGlobals->curtime + 0.75;
@@ -432,7 +432,7 @@ void CMissile::IgniteThink( void )
 	AngleVectors( GetLocalAngles(), &vecForward );
 	SetAbsVelocity( vecForward * RPG_SPEED );
 
-	SetThink( SeekThink );
+	SetThink( &CMissile::SeekThink );
 	SetNextThink( gpGlobals->curtime );
 
 	if ( m_hOwner && m_hOwner->GetOwner() )
@@ -878,7 +878,7 @@ void CAPCMissile::Init()
 	SetModel("models/weapons/w_missile.mdl");
 	UTIL_SetSize( this, vec3_origin, vec3_origin );
 	CreateSmokeTrail();
-	SetTouch( APCMissileTouch );
+	SetTouch( &CAPCMissile::APCMissileTouch );
 	m_flLastHomingSpeed = APC_HOMING_SPEED;
 }
 
@@ -913,7 +913,7 @@ void CAPCMissile::IgniteDelay( void )
 {
 	m_flIgnitionTime = gpGlobals->curtime + 0.3f;
 
-	SetThink( BeginSeekThink );
+	SetThink( &CAPCMissile::BeginSeekThink );
 	SetNextThink( m_flIgnitionTime );
 	Init();
 	AddSolidFlags( FSOLID_NOT_SOLID );
@@ -922,7 +922,7 @@ void CAPCMissile::IgniteDelay( void )
 void CAPCMissile::AugerDelay( float flDelay )
 {
 	m_flIgnitionTime = gpGlobals->curtime;
-	SetThink( AugerStartThink );
+	SetThink( &CAPCMissile::AugerStartThink );
 	SetNextThink( gpGlobals->curtime + flDelay );
 	Init();
 	DisableGuiding();
@@ -935,14 +935,14 @@ void CAPCMissile::AugerStartThink()
 		m_hRocketTrail->m_bDamaged = true;
 	}
 	m_flAugerTime = gpGlobals->curtime + random->RandomFloat( 1.0f, 2.0f );
-	SetThink( AugerThink );
+	SetThink( &CAPCMissile::AugerThink );
 	SetNextThink( gpGlobals->curtime );
 }
 
 void CAPCMissile::ExplodeDelay( float flDelay )
 {
 	m_flIgnitionTime = gpGlobals->curtime;
-	SetThink( ExplodeThink );
+	SetThink( &CAPCMissile::ExplodeThink );
 	SetNextThink( gpGlobals->curtime + flDelay );
 	Init();
 	DisableGuiding();
@@ -952,7 +952,7 @@ void CAPCMissile::ExplodeDelay( float flDelay )
 void CAPCMissile::BeginSeekThink( void )
 {
  	RemoveSolidFlags( FSOLID_NOT_SOLID );
-	SetThink( SeekThink );
+	SetThink( &CMissile::SeekThink );
 	SetNextThink( gpGlobals->curtime );
 }
 
@@ -2055,7 +2055,7 @@ CLaserDot *CLaserDot::Create( const Vector &origin, CBaseEntity *pOwner, bool bV
 
 	pLaserDot->SetOwnerEntity( pOwner );
 
-	pLaserDot->SetContextThink( LaserThink, gpGlobals->curtime + 0.1f, g_pLaserDotThink );
+	pLaserDot->SetContextThink( &CLaserDot::LaserThink, gpGlobals->curtime + 0.1f, g_pLaserDotThink );
 	pLaserDot->SetSimulatedEveryTick( true );
 
 	if ( !bVisibleDot )

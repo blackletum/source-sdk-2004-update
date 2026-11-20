@@ -1,0 +1,105 @@
+//-----------------------------------------------------------------------------
+//	PROJECTS.VGC
+//
+//	Project Configurations for the 2004 SDK (HL2 branch)
+//
+//	One $Project per project of the original Everything_SDK.sln / Game_HL2.sln / Game_SDK.sln.
+//	The game projects ("client", "server") have one script per game; the game switches on the
+//	vpc command line (/hl2, /sdk) decide which of them are generated.
+//-----------------------------------------------------------------------------
+
+/////////////////////////
+// Project definitions //
+/////////////////////////
+
+$Project "client"
+{
+	"cl_dll\client_hl2.vpc"	[$WIN32 && $HL2]
+	"cl_dll\client_sdk.vpc"	[$WIN32 && $SDK]
+}
+
+$Project "server"
+{
+	"dlls\server_hl2.vpc"	[$WIN32 && $HL2]
+	"dlls\server_sdk.vpc"	[$WIN32 && $SDK]
+}
+
+$Project "vgui_controls"
+{
+	"vgui2\controls\vgui_controls.vpc"	[$WIN32]
+}
+
+$Project "glview"
+{
+	"utils\glview\glview.vpc"	[$WIN32]
+}
+
+$Project "height2normal"
+{
+	"utils\height2normal\height2normal.vpc"	[$WIN32]
+}
+
+$Project "serverplugin_empty"
+{
+	"utils\serverplugin_sample\serverplugin_empty.vpc"	[$WIN32]
+}
+
+$Project "studiomdl"
+{
+	"utils\studiomdl\studiomdl.vpc"	[$WIN32]
+}
+
+$Project "tgadiff"
+{
+	"utils\tgadiff\tgadiff.vpc"	[$WIN32]
+}
+
+$Project "vbsp"
+{
+	"utils\vbsp\vbsp.vpc"	[$WIN32]
+}
+
+$Project "vice"
+{
+	"utils\vice\vice.vpc"	[$WIN32]
+}
+
+$Project "vprojtomake"
+{
+	"utils\vprojtomake\vprojtomake.vpc"	[$WIN32]
+}
+
+$Project "vrad"
+{
+	"utils\vrad\vrad.vpc"	[$WIN32]
+}
+
+$Project "vrad_launcher"
+{
+	"utils\vrad_launcher\vrad_launcher.vpc"	[$WIN32]
+}
+
+$Project "vtf2tga"
+{
+	"utils\vtf2tga\vtf2tga.vpc"	[$WIN32]
+}
+
+$Project "vtfdiff"
+{
+	"utils\vtfdiff\vtfdiff.vpc"	[$WIN32]
+}
+
+$Project "vvis"
+{
+	"utils\vvis\vvis.vpc"	[$WIN32]
+}
+
+$Project "vvis_launcher"
+{
+	"utils\vvis_launcher\vvis_launcher.vpc"	[$WIN32]
+}
+
+$Project "xwad"
+{
+	"utils\xwad\xwad.vpc"	[$WIN32]
+}

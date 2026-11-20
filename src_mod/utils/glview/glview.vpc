@@ -1,0 +1,98 @@
+//-----------------------------------------------------------------------------
+//	GLVIEW.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/glview/glview.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"glview"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+// Conversion notes:
+//   - 1 file(s) referenced by the vcproj do not exist on disk (listed as comments below)
+
+$Configuration
+{
+	$General
+	{
+		$CharacterSet			"Not Set"
+	}
+
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\common;..\..\public;..\..\public\tier1"
+		$PreprocessorDefinitions		"$BASE;WIN32;_WINDOWS;PROTECTED_THINGS_DISABLE"
+		$EnableC++Exceptions		"Yes (/EHsc)"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+
+	$Linker
+	{
+		$AdditionalDependencies	"$BASE glu32.lib opengl32.lib odbc32.lib odbccp32.lib winmm.lib"
+	}
+}
+
+$Project	"glview"
+{
+	$Folder	"Source Files"
+	{
+		$File	"glview.cpp"
+		$File	"..\..\Public\Mathlib.cpp"
+		$Folder	"common files"
+		{
+			$File	"..\..\tier1\characterset.cpp"
+			$File	"..\common\cmdlib.cpp"
+			$File	"..\..\public\filesystem_helpers.cpp"
+			$File	"..\..\public\filesystem_init.cpp"
+			$File	"..\common\filesystem_tools.cpp"
+			$File	"..\..\tier1\interface.cpp"
+			$File	"..\..\tier1\KeyValues.cpp"
+			$File	"..\common\physdll.cpp"
+			$File	"..\..\tier1\utlbuffer.cpp"
+			$File	"..\..\public\tier1\utlbuffer.h"
+		}
+
+	}
+
+	$Folder	"Header Files"
+	{
+		$File	"..\common\cmdlib.h"
+		$File	"glos.h"
+		$File	"..\..\Public\MATHLIB.H"
+	}
+
+	$Folder	"Resource Files"
+	{
+		// MISSING ON DISK: $File	"C:\Program Files\Microsoft Visual Studio\VC98\Include\BASETSD.H"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Implib	"$LIBPUBLIC\tier0"
+		$Implib	"$LIBPUBLIC\vstdlib"
+	}
+}
+

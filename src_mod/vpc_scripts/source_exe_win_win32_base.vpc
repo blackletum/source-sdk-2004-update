@@ -1,0 +1,82 @@
+//-----------------------------------------------------------------------------
+//	SOURCE_EXE_WIN_WIN32_BASE.VPC
+//
+//	Base Settings for all Win32 EXE projects (the SDK command line / GUI tools: vbsp, studiomdl, ...)
+//-----------------------------------------------------------------------------
+
+$Include "$SRCDIR\vpc_scripts\version.vpc"
+
+$MacroRequired				"SRCDIR"
+$MacroRequired				"OUTBINNAME"	"$PROJECTNAME"
+$MacroRequired				"OUTBINDIR"
+
+$Macro OUTBINDIR	"$OUTBINDIR$PLATSUBDIR"
+$Macro LIBPUBLIC	"$SRCDIR\lib\public$PLATSUBDIR"
+$Macro LIBCOMMON	"$SRCDIR\lib\common$PLATSUBDIR"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_win_win32_debug.vpc"
+$Include "$SRCDIR\vpc_scripts\source_exe_win_win32_release.vpc"
+$Include "$SRCDIR\vpc_scripts\source_win32_base.vpc"
+
+$IgnoreRedundancyWarning	"ON"
+
+// Common Configuration
+$Configuration
+{
+	$General
+	{
+		$TargetName	"$OUTBINNAME"
+	}
+
+	$Compiler
+	{
+		$PreprocessorDefinitions			"$BASE;COMPILER_MSVC32"
+		// NOTE: WIN32 is intentionally NOT defined, matching the original 2004 .vcproj files
+		// (some 2004 headers branch on "defined( WIN32 )" and were never built with it set).
+	}
+
+	$Compiler
+	{
+		$EnableEnhancedInstructionSet	"Streaming SIMD Extensions (/arch:SSE)"
+	}
+
+	$Linker
+	{
+		$AdditionalDependencies				"$BASE shell32.lib user32.lib advapi32.lib gdi32.lib comdlg32.lib ole32.lib"
+		$TargetMachine						"MachineX86 (/MACHINE:X86)"
+		// Suppress this pointless warning using the undocumented /ignore linker switch
+		$AdditionalOptions					"$BASE /ignore:4221"
+	}
+
+	$PreBuildEvent
+	{
+		$CommandLine		"if EXIST $OUTBINDIR\$(TargetFileName) for /f $QUOTEdelims=$QUOTE %%A in ('attrib $QUOTE$OUTBINDIR\$(TargetFileName)$QUOTE') do set valveTmpIsReadOnly=$QUOTE%%A$QUOTE" "\n" \
+							"set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%" "\n" \
+							"if $QUOTE%valveTmpIsReadOnlyLetter%$QUOTE==$QUOTER$QUOTE del /q $QUOTE$(TargetDir)$QUOTE$(TargetFileName)" "\n" \
+							"$CRCCHECK" "\n"
+	}
+
+	$PostBuildEvent
+	{
+		$CommandLine		"if not exist $QUOTE$OUTBINDIR$QUOTE mkdir $QUOTE$OUTBINDIR$QUOTE" "\n" \
+							"if exist $QUOTE$OUTBINDIR\$(TargetFileName)$QUOTE attrib -r $QUOTE$OUTBINDIR\$(TargetFileName)$QUOTE" "\n" \
+							"copy $QUOTE$(TargetDir)$(TargetFileName)$QUOTE $QUOTE$OUTBINDIR\$(TargetFileName)$QUOTE" "\n" \
+							"if ERRORLEVEL 1 goto BuildEventFailed" "\n" \
+							"if exist $QUOTE$(TargetDir)$(TargetName).map$QUOTE copy $QUOTE$(TargetDir)$(TargetName).map$QUOTE $QUOTE$OUTBINDIR\$(TargetName).map$QUOTE" "\n" \
+							"if exist $QUOTE$(TargetDir)$(TargetName).pdb$QUOTE copy $QUOTE$(TargetDir)$(TargetName).pdb$QUOTE $QUOTE$OUTBINDIR\$(TargetName).pdb$QUOTE" "\n" \
+							"if ERRORLEVEL 1 goto BuildEventFailed" "\n" \
+							"goto BuildEventOK" "\n" \
+							":BuildEventFailed" "\n" \
+							"echo *** ERROR! PostBuildStep FAILED for $(ProjectName)! EXE or DLL is probably running. ***" "\n" \
+							"del /q $QUOTE$(TargetDir)$(TargetFileName)$QUOTE" "\n" \
+							"exit 1" "\n" \
+							":BuildEventOK" "\n"
+
+		$Description		"Publishing to $OUTBINDIR"
+		$ExcludedFromBuild	"No"
+	}
+}
+
+// NOTE: the 2013 "skeleton project" (memoverride.cpp, pointeroverride.asm, tier1/tier0/vstdlib
+// link libraries) is intentionally NOT used here. In the 2004 SDK each tool lists its own source
+// files and link libraries (tier0, vstdlib, vtf, ...) explicitly in its .vpc.

@@ -321,7 +321,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 
 				AddEffects( EF_NODRAW );
 				SetTouch( NULL );
-				SetThink( SUB_Remove );
+				SetThink( &CCrossbowBolt::SUB_Remove );
 				SetNextThink( gpGlobals->curtime + 2.0f );
 
 				if ( m_pGlowSprite != NULL )

@@ -1,0 +1,62 @@
+//-----------------------------------------------------------------------------
+//	XWAD.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/xwad/xwad.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"xwad"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+// Conversion notes:
+//   - the vcproj has no additional include directories; the base scripts' ($SRCDIR\public;$SRCDIR\public\tier1) apply
+
+$Configuration
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE;WIN32;_CONSOLE"
+		$EnableC++Exceptions		"Yes (/EHsc)"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+}
+
+$Project	"xwad"
+{
+	$Folder	"Source Files"
+	{
+		$File	"goldsrc_bspfile.h"
+		$File	"goldsrc_standin.cpp"
+		$File	"goldsrc_standin.h"
+		$File	"lbmlib.cpp"
+		$File	"lbmlib.h"
+		$File	"wadlib.cpp"
+		$File	"wadlib.h"
+		$File	"xwad.cpp"
+	}
+
+}
+

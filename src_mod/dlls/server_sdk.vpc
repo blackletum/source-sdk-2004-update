@@ -1,0 +1,1640 @@
+//-----------------------------------------------------------------------------
+//	SERVER_SDK.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from dlls/hl_sdk.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		".."
+$Macro GAMENAME		"sdk"
+$Macro OUTBINNAME	"server"
+$Macro OUTBINDIR		"$SRCDIR\..\game\sdk\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug_$GAMENAME"
+		$IntermediateDirectory	".\Debug_$GAMENAME"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release_$GAMENAME"
+		$IntermediateDirectory	".\Release_$GAMENAME"
+	}
+}
+
+// Conversion notes:
+//   - 1 file(s) referenced by the vcproj do not exist on disk (listed as comments below)
+//   - 241 file(s) were ExcludedFromBuild in the vcproj (HL2-branch leftovers from the SDK
+//     multiplayer template, or unused code) and are omitted here; see the list at the end of this file.
+
+$Configuration
+{
+	$General
+	{
+		$CharacterSet			"Not Set"
+	}
+
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE;BOTS;SDK_DLL;USES_SAVERESTORE;GAME_DLL;sprintf=use_Q_snprintf_instead_of_sprintf;VECTOR;strncpy=use_Q_strncpy_instead;_snprintf=use_Q_snprintf_instead;PROTECTED_THINGS_ENABLE"
+		$Create/UsePrecompiledHeader	"Use Precompiled Header (/Yu)"
+		$Create/UsePCHThroughFile		"cbase.h"
+		$PrecompiledHeaderFile		"$(IntDir)/server.pch"
+	}
+
+	$Linker
+	{
+		$IgnoreImportLibrary		"TRUE"
+		$AdditionalDependencies	"$BASE winmm.lib"
+		$BaseAddress				"0x22000000"
+	}
+}
+
+$Configuration "Debug"
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\Public\tier1;..\game_shared\sdk;.;..\Public;..\game_shared;..\utils\common;..\dlls;..\dlls\sdk"
+		$PreprocessorDefinitions	"$BASE;fopen=dont_use_fopen"
+	}
+}
+
+$Configuration "Release"
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\game_shared\sdk;.;..\Public\tier1;..\Public;..\game_shared;..\utils\common;..\dlls;..\dlls\sdk"
+	}
+}
+
+$Project	"Server (SDK)"
+{
+	$Folder	"Source Files"
+	{
+		$File	"..\game_shared\activitylist.cpp"
+		$File	"..\game_shared\activitylist.h"
+		$File	"AI_Activity.cpp"
+		$File	"..\game_shared\ai_activity.h"
+		$File	"AI_BaseActor.cpp"
+		$File	"AI_BaseActor.h"
+		$File	"AI_BaseHumanoid.cpp"
+		$File	"AI_BaseHumanoid.h"
+		$File	"AI_BaseNPC.cpp"
+		$File	"AI_BaseNPC.h"
+		$File	"AI_BaseNPC_Flyer.cpp"
+		$File	"AI_BaseNPC_Flyer.h"
+		$File	"AI_BaseNPC_Flyer_New.cpp"
+		$File	"AI_BaseNPC_Flyer_New.h"
+		$File	"AI_BaseNPC_Movement.cpp"
+		$File	"ai_basenpc_physicsflyer.cpp"
+		$File	"ai_basenpc_physicsflyer.h"
+		$File	"AI_BaseNPC_Schedule.cpp"
+		$File	"AI_BaseNPC_Squad.cpp"
+		$File	"AI_Behavior.cpp"
+		$File	"AI_Behavior.h"
+		$File	"ai_behavior_assault.cpp"
+		$File	"ai_behavior_assault.h"
+		$File	"AI_Behavior_Follow.cpp"
+		$File	"AI_Behavior_Follow.h"
+		$File	"AI_Behavior_Lead.cpp"
+		$File	"AI_Behavior_Lead.h"
+		$File	"ai_behavior_rappel.cpp"
+		$File	"ai_behavior_rappel.h"
+		$File	"AI_Behavior_Standoff.cpp"
+		$File	"AI_Behavior_Standoff.h"
+		$File	"AI_Blended_Movement.cpp"
+		$File	"AI_Blended_Movement.h"
+		$File	"AI_Component.h"
+		$File	"AI_ConCommands.cpp"
+		$File	"AI_Condition.cpp"
+		$File	"AI_Condition.h"
+		$File	"AI_Criteria.cpp"
+		$File	"AI_Criteria.h"
+		$File	"AI_Debug.h"
+		$File	"..\game_shared\ai_debug_shared.h"
+		$File	"AI_Default.cpp"
+		$File	"AI_Default.h"
+		$File	"AI_DynamicLink.cpp"
+		$File	"AI_DynamicLink.h"
+		$File	"ai_event.cpp"
+		$File	"AI_GoalEntity.cpp"
+		$File	"AI_GoalEntity.h"
+		$File	"AI_Hint.cpp"
+		$File	"AI_Hint.h"
+		$File	"AI_Hull.cpp"
+		$File	"AI_Hull.h"
+		$File	"AI_InitUtils.cpp"
+		$File	"AI_InitUtils.h"
+		$File	"AI_Interest_Target.cpp"
+		$File	"AI_Interest_Target.h"
+		$File	"AI_Link.cpp"
+		$File	"AI_Link.h"
+		$File	"AI_LocalNavigator.cpp"
+		$File	"AI_LocalNavigator.h"
+		$File	"ai_looktarget.cpp"
+		$File	"ai_looktarget.h"
+		$File	"AI_Memory.cpp"
+		$File	"AI_Memory.h"
+		$File	"AI_Motor.cpp"
+		$File	"AI_Motor.h"
+		$File	"AI_MoveProbe.cpp"
+		$File	"AI_MoveProbe.h"
+		$File	"AI_MoveShoot.cpp"
+		$File	"AI_MoveShoot.h"
+		$File	"AI_MoveSolver.cpp"
+		$File	"AI_MoveSolver.h"
+		$File	"AI_MoveTypes.h"
+		$File	"AI_Namespaces.cpp"
+		$File	"AI_Namespaces.h"
+		$File	"AI_NavGoalType.h"
+		$File	"AI_Navigator.cpp"
+		$File	"AI_Navigator.h"
+		$File	"AI_NavType.h"
+		$File	"AI_Network.cpp"
+		$File	"AI_Network.h"
+		$File	"AI_NetworkManager.cpp"
+		$File	"AI_NetworkManager.h"
+		$File	"AI_Node.cpp"
+		$File	"AI_Node.h"
+		$File	"AI_NPCState.h"
+		$File	"ai_obstacle_type.h"
+		$File	"AI_Pathfinder.cpp"
+		$File	"AI_Pathfinder.h"
+		$File	"AI_PlaneSolver.cpp"
+		$File	"AI_PlaneSolver.h"
+		$File	"ai_playerally.cpp"
+		$File	"ai_playerally.h"
+		$File	"AI_ResponseSystem.cpp"
+		$File	"AI_ResponseSystem.h"
+		$File	"AI_Route.cpp"
+		$File	"AI_Route.h"
+		$File	"AI_RouteDist.h"
+		$File	"AI_SaveRestore.cpp"
+		$File	"AI_SaveRestore.h"
+		$File	"AI_Schedule.cpp"
+		$File	"AI_Schedule.h"
+		$File	"AI_ScriptConditions.cpp"
+		$File	"AI_ScriptConditions.h"
+		$File	"AI_Senses.cpp"
+		$File	"AI_Senses.h"
+		$File	"ai_sentence.cpp"
+		$File	"ai_sentence.h"
+		$File	"AI_Speech.cpp"
+		$File	"AI_Speech.h"
+		$File	"AI_SpeechFilter.cpp"
+		$File	"AI_SpeechFilter.h"
+		$File	"AI_Squad.cpp"
+		$File	"AI_Squad.h"
+		$File	"AI_SquadSlot.cpp"
+		$File	"AI_SquadSlot.h"
+		$File	"AI_TacticalServices.cpp"
+		$File	"AI_TacticalServices.h"
+		$File	"AI_Task.cpp"
+		$File	"AI_Task.h"
+		$File	"ai_trackpather.cpp"
+		$File	"ai_trackpather.h"
+		$File	"ai_utils.cpp"
+		$File	"ai_utils.h"
+		$File	"AI_Waypoint.cpp"
+		$File	"AI_Waypoint.h"
+		$File	"..\game_shared\ammodef.cpp"
+		$File	"..\game_shared\animation.cpp"
+		$File	"..\game_shared\animation.h"
+		$File	"..\game_shared\apparent_velocity_helper.h"
+		$File	"..\game_shared\base_playeranimstate.cpp"
+		$File	"base_transmit_proxy.cpp"
+		$File	"baseanimating.cpp"
+		$File	"BaseAnimating.h"
+		$File	"BaseAnimatingOverlay.cpp"
+		$File	"BaseAnimatingOverlay.h"
+		$File	"BaseCombatCharacter.cpp"
+		$File	"BaseCombatCharacter.h"
+		$File	"..\game_shared\basecombatcharacter_shared.cpp"
+		$File	"basecombatweapon.cpp"
+		$File	"basecombatweapon.h"
+		$File	"..\game_shared\basecombatweapon_shared.cpp"
+		$File	"..\game_shared\basecombatweapon_shared.h"
+		$File	"BaseEntity.cpp"
+		$File	"BaseEntity.h"
+		$File	"..\game_shared\baseentity_shared.cpp"
+		$File	"..\game_shared\baseentity_shared.h"
+		$File	"BaseFlex.cpp"
+		$File	"BaseFlex.h"
+		$File	"..\game_shared\basegrenade_shared.cpp"
+		$File	"..\game_shared\basegrenade_shared.h"
+		$File	"..\game_shared\baseparticleentity.cpp"
+		$File	"..\game_shared\baseparticleentity.h"
+		$File	"..\game_shared\baseplayer_shared.cpp"
+		$File	"..\game_shared\baseplayer_shared.h"
+		$File	"BasePropDoor.h"
+		$File	"BaseToggle.h"
+		$File	"BaseViewModel.cpp"
+		$File	"BaseViewModel.h"
+		$File	"..\game_shared\baseviewmodel_shared.cpp"
+		$File	"..\game_shared\baseviewmodel_shared.h"
+		$File	"..\game_shared\beam_shared.cpp"
+		$File	"..\game_shared\beam_shared.h"
+		$File	"..\tier1\bitbuf.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"BitString.cpp"
+		$File	"BitString.h"
+		$File	"bmodels.cpp"
+		$File	"..\public\bone_setup.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\bone_setup.h"
+		$File	"buttons.cpp"
+		$File	"buttons.h"
+		$File	"cbase.cpp"
+		$File	"cbase.h"
+		$File	"..\tier1\characterset.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\tier1\checksum_crc.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\checksum_crc.h"
+		$File	"..\tier1\checksum_md5.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\choreoactor.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\choreoactor.h"
+		$File	"..\game_shared\choreochannel.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\choreochannel.h"
+		$File	"..\game_shared\choreoevent.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\choreoevent.h"
+		$File	"..\game_shared\choreoscene.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\choreoscene.h"
+		$File	"client.cpp"
+		$File	"client.h"
+		$File	"..\game_shared\collisionproperty.cpp"
+		$File	"..\game_shared\collisionproperty.h"
+		$File	"..\Public\CollisionUtils.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\CollisionUtils.h"
+		$File	"ControlEntities.cpp"
+		$File	"..\tier1\convar.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\convar.h"
+		$File	"cplane.cpp"
+		$File	"CRagdollMagnet.cpp"
+		$File	"CTerrainMorph.cpp"
+		$File	"damagemodifier.cpp"
+		$File	"..\game_shared\debugoverlay_shared.cpp"
+		$File	"..\game_shared\debugoverlay_shared.h"
+		$File	"..\game_shared\decals.cpp"
+		$File	"doors.cpp"
+		$File	"doors.h"
+		$File	"..\public\dt_send.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\dt_utlvector_common.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\dt_utlvector_send.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"dynamiclight.cpp"
+		$File	"..\Public\edict.h"
+		$File	"..\Public\Editor_SendCommand.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\Editor_SendCommand.h"
+		$File	"..\game_shared\effect_color_tables.h"
+		$File	"..\game_shared\effect_dispatch_data.cpp"
+		$File	"effects.cpp"
+		$File	"effects.h"
+		$File	"EffectsServer.cpp"
+		$File	"..\game_shared\ehandle.cpp"
+		$File	"..\Public\eiface.h"
+		$File	"enginecallback.h"
+		$File	"entityapi.h"
+		$File	"entityblocker.cpp"
+		$File	"entityblocker.h"
+		$File	"EntityDissolve.cpp"
+		$File	"EntityDissolve.h"
+		$File	"EntityFlame.cpp"
+		$File	"EntityInput.h"
+		$File	"EntityList.cpp"
+		$File	"EntityList.h"
+		$File	"..\game_shared\entitylist_base.cpp"
+		$File	"EntityOutput.h"
+		$File	"EntityParticleTrail.cpp"
+		$File	"EntityParticleTrail.h"
+		$File	"..\game_shared\EntityParticleTrail_Shared.cpp"
+		$File	"..\game_shared\entityparticletrail_shared.h"
+		$File	"env_effectsscript.cpp"
+		$File	"env_entity_maker.cpp"
+		$File	"env_particlescript.cpp"
+		$File	"env_player_surface_trigger.cpp"
+		$File	"env_player_surface_trigger.h"
+		$File	"env_screenoverlay.cpp"
+		$File	"env_texturetoggle.cpp"
+		$File	"..\game_shared\env_wind_shared.cpp"
+		$File	"..\game_shared\env_wind_shared.h"
+		$File	"env_zoom.cpp"
+		$File	"env_zoom.h"
+		$File	"EnvBeam.cpp"
+		$File	"EnvFade.cpp"
+		$File	"EnvHudHint.cpp"
+		$File	"EnvLaser.cpp"
+		$File	"EnvLaser.h"
+		$File	"EnvMessage.cpp"
+		$File	"EnvMessage.h"
+		$File	"EnvMicrophone.cpp"
+		$File	"envmicrophone.h"
+		$File	"EnvShake.cpp"
+		$File	"EnvSpark.cpp"
+		$File	"..\Public\event_flags.h"
+		$File	"event_tempentity_tester.h"
+		$File	"..\game_shared\eventlist.cpp"
+		$File	"..\game_shared\eventlist.h"
+		$File	"EventLog.cpp"
+		$File	"EventQueue.h"
+		$File	"explode.cpp"
+		$File	"explode.h"
+		$File	"..\public\filesystem_helpers.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"filters.cpp"
+		$File	"filters.h"
+		$File	"fire.cpp"
+		$File	"fire.h"
+		$File	"fire_smoke.cpp"
+		$File	"fire_smoke.h"
+		$File	"fogcontroller.cpp"
+		$File	"fourwheelvehiclephysics.cpp"
+		$File	"fourwheelvehiclephysics.h"
+		$File	"func_areaportal.cpp"
+		$File	"func_areaportalbase.cpp"
+		$File	"func_areaportalbase.h"
+		$File	"func_areaportalwindow.cpp"
+		$File	"func_areaportalwindow.h"
+		$File	"func_break.cpp"
+		$File	"func_break.h"
+		$File	"func_breakablesurf.cpp"
+		$File	"func_breakablesurf.h"
+		$File	"func_dust.cpp"
+		$File	"..\game_shared\func_dust_shared.h"
+		$File	"..\game_shared\func_ladder.cpp"
+		$File	"func_ladder_endpoint.cpp"
+		$File	"func_lod.cpp"
+		$File	"func_movelinear.cpp"
+		$File	"func_movelinear.h"
+		$File	"func_occluder.cpp"
+		$File	"func_smokevolume.cpp"
+		$File	"game.cpp"
+		$File	"game.h"
+		$File	"game_ui.cpp"
+		$File	"gamehandle.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"GameInterface.cpp"
+		$File	"GameInterface.h"
+		$File	"..\game_shared\gamemovement.cpp"
+		$File	"..\game_shared\gamemovement.h"
+		$File	"..\game_shared\gamerules.cpp"
+		$File	"..\game_shared\gamerules.h"
+		$File	"..\game_shared\gamerules_register.cpp"
+		$File	"..\game_shared\gamestringpool.cpp"
+		$File	"..\game_shared\gamestringpool.h"
+		$File	"gametrace_dll.cpp"
+		$File	"..\game_shared\gamevars_shared.cpp"
+		$File	"..\game_shared\gamevars_shared.h"
+		$File	"genericactor.cpp"
+		$File	"genericmonster.cpp"
+		$File	"Gib.cpp"
+		$File	"Gib.h"
+		$File	"globals.cpp"
+		$File	"globalstate.cpp"
+		$File	"globalstate.h"
+		$File	"globalstate_private.h"
+		$File	"GunTarget.cpp"
+		$File	"h_ai.cpp"
+		$File	"h_export.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"hierarchy.cpp"
+		$File	"hierarchy.h"
+		$File	"hltvdirector.cpp"
+		$File	"hltvdirector.h"
+		$File	"..\public\IceKey.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\ichoreoeventcallback.h"
+		$File	"..\game_shared\igamesystem.cpp"
+		$File	"..\game_shared\igamesystem.h"
+		$File	"info_camera_link.cpp"
+		$File	"info_camera_link.h"
+		$File	"init_factory.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"init_factory.h"
+		$File	"..\tier1\interface.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\interface.h"
+		$File	"Intermission.cpp"
+		$File	"..\game_shared\interval.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\interval.h"
+		$File	"..\game_shared\iscenetokenprocessor.h"
+		$File	"iservervehicle.h"
+		$File	"item_world.cpp"
+		$File	"items.h"
+		$File	"..\Public\ivoiceserver.h"
+		$File	"..\public\KeyFrame\keyframe.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\KeyFrame\keyframe.h"
+		$File	"..\tier1\KeyValues.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"lightglow.cpp"
+		$File	"lights.cpp"
+		$File	"lights.h"
+		$File	"LockSounds.h"
+		$File	"logic_measure_movement.cpp"
+		$File	"logic_navigation.cpp"
+		$File	"LogicAuto.cpp"
+		$File	"LogicEntities.cpp"
+		$File	"LogicRelay.cpp"
+		$File	"..\public\map_utils.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"mapentities.cpp"
+		$File	"..\game_shared\mapentities_shared.cpp"
+		$File	"maprules.cpp"
+		$File	"maprules.h"
+		$File	"MaterialModifyControl.cpp"
+		$File	"..\Public\Mathlib.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\MATHLIB.H"
+		$File	"..\public\tier0\memoverride.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\tier1\mempool.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\mempool.h"
+		$File	"message_entity.cpp"
+		$File	"..\Public\model_types.h"
+		$File	"ModelEntities.cpp"
+		$File	"movehelper_server.cpp"
+		$File	"movehelper_server.h"
+		$File	"Movement.cpp"
+		$File	"..\game_shared\movevars_shared.cpp"
+		$File	"movie_explosion.h"
+		$File	"..\game_shared\multiplay_gamerules.cpp"
+		$File	"..\game_shared\multiplay_gamerules.h"
+		$File	"nav.h"
+		$File	"nav_area.cpp"
+		$File	"nav_area.h"
+		$File	"nav_edit.cpp"
+		$File	"nav_file.cpp"
+		$File	"nav_generate.cpp"
+		$File	"nav_mesh.cpp"
+		$File	"nav_mesh.h"
+		$File	"nav_node.cpp"
+		$File	"nav_node.h"
+		$File	"nav_pathfind.h"
+		$File	"NDebugOverlay.cpp"
+		$File	"NDebugOverlay.h"
+		$File	"networkstringtable_gamedll.h"
+		$File	"..\Public\NetworkStringTableDefs.h"
+		$File	"..\public\networkvar.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"npc_vehicledriver.cpp"
+		$File	"particle_fire.h"
+		$File	"particle_light.cpp"
+		$File	"particle_light.h"
+		$File	"particle_smokegrenade.h"
+		$File	"pathcorner.cpp"
+		$File	"pathtrack.cpp"
+		$File	"pathtrack.h"
+		$File	"..\public\vphysics\performance.h"
+		$File	"phys_controller.cpp"
+		$File	"phys_controller.h"
+		$File	"physconstraint.cpp"
+		$File	"physics.cpp"
+		$File	"physics.h"
+		$File	"physics_bone_follower.cpp"
+		$File	"physics_cannister.cpp"
+		$File	"physics_fx.cpp"
+		$File	"physics_impact_damage.cpp"
+		$File	"physics_main.cpp"
+		$File	"..\game_shared\physics_main_shared.cpp"
+		$File	"physics_npc_solver.cpp"
+		$File	"physics_npc_solver.h"
+		$File	"physics_prop_ragdoll.cpp"
+		$File	"physics_prop_ragdoll.h"
+		$File	"..\game_shared\physics_saverestore.cpp"
+		$File	"..\game_shared\physics_saverestore.h"
+		$File	"..\game_shared\physics_shared.cpp"
+		$File	"..\game_shared\physics_shared.h"
+		$File	"physobj.cpp"
+		$File	"physobj.h"
+		$File	"player.cpp"
+		$File	"player.h"
+		$File	"player_command.cpp"
+		$File	"player_command.h"
+		$File	"player_lagcompensation.cpp"
+		$File	"player_pickup.cpp"
+		$File	"player_pickup.h"
+		$File	"player_resource.cpp"
+		$File	"player_resource.h"
+		$File	"playerinfomanager.cpp"
+		$File	"playerlocaldata.cpp"
+		$File	"playerlocaldata.h"
+		$File	"plugin_check.cpp"
+		$File	"point_camera.cpp"
+		$File	"point_camera.h"
+		$File	"point_playermoveconstraint.cpp"
+		$File	"point_spotlight.cpp"
+		$File	"point_template.cpp"
+		$File	"point_template.h"
+		$File	"PointAngleSensor.cpp"
+		$File	"PointAngularVelocitySensor.cpp"
+		$File	"PointHurt.cpp"
+		$File	"PointTeleport.cpp"
+		$File	"..\game_shared\positionwatcher.h"
+		$File	"..\game_shared\precache_register.cpp"
+		$File	"..\game_shared\precache_register.h"
+		$File	"..\game_shared\predictableid.cpp"
+		$File	"..\game_shared\predictableid.h"
+		$File	"..\game_shared\predicted_viewmodel.cpp"
+		$File	"..\game_shared\predicted_viewmodel.h"
+		$File	"props.cpp"
+		$File	"props.h"
+		$File	"..\game_shared\props_shared.cpp"
+		$File	"ragdoll_manager.cpp"
+		$File	"..\game_shared\ragdoll_shared.cpp"
+		$File	"RagdollBoogie.cpp"
+		$File	"RagdollBoogie.h"
+		$File	"..\common\randoverride.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"recipientfilter.cpp"
+		$File	"recipientfilter.h"
+		$File	"..\tier1\resourcemanager.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"rope.cpp"
+		$File	"rope.h"
+		$File	"..\game_shared\rope_helpers.cpp"
+		$File	"..\Public\rope_physics.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\rope_physics.h"
+		$File	"..\Public\rope_shared.h"
+		$File	"..\game_shared\saverestore.cpp"
+		$File	"..\game_shared\saverestore.h"
+		$File	"..\game_shared\saverestore_bitstring.h"
+		$File	"saverestore_gamedll.cpp"
+		$File	"..\game_shared\saverestore_utlsymbol.h"
+		$File	"..\game_shared\saverestore_utlvector.h"
+		$File	"SceneEntity.cpp"
+		$File	"sceneentity.h"
+		$File	"..\public\scratchpad3d.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"scratchpad_gamedll_helpers.cpp"
+		$File	"..\public\ScratchPadUtils.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"scripted.cpp"
+		$File	"scripted.h"
+		$File	"ScriptedTarget.cpp"
+		$File	"ScriptedTarget.h"
+		$File	"..\game_shared\scriptevent.h"
+		$File	"sendproxy.cpp"
+		$File	"..\Public\server_class.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\server_class.h"
+		$File	"ServerNetworkProperty.cpp"
+		$File	"ServerNetworkProperty.h"
+		$File	"shadowcontrol.cpp"
+		$File	"..\Public\shattersurfacetypes.h"
+		$File	"..\game_shared\sheetsimulator.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\sheetsimulator.h"
+		$File	"..\Public\simple_physics.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\simple_physics.h"
+		$File	"simtimer.cpp"
+		$File	"simtimer.h"
+		$File	"..\game_shared\singleplay_gamerules.cpp"
+		$File	"..\game_shared\singleplay_gamerules.h"
+		$File	"SkyCamera.cpp"
+		$File	"sound.cpp"
+		$File	"..\game_shared\SoundEmitterSystem.cpp"
+		$File	"soundent.cpp"
+		$File	"soundent.h"
+		$File	"..\game_shared\soundenvelope.cpp"
+		$File	"..\public\SoundParametersInternal.cpp"
+		$File	"soundscape.cpp"
+		$File	"soundscape.h"
+		$File	"soundscape_system.cpp"
+		$File	"spark.h"
+		$File	"spotlightend.cpp"
+		$File	"spotlightend.h"
+		$File	"..\game_shared\Sprite.cpp"
+		$File	"..\game_shared\Sprite.h"
+		$File	"..\game_shared\SpriteTrail.h"
+		$File	"..\public\vphysics\stats.h"
+		$File	"..\tier1\stringpool.cpp"
+		$File	"..\Public\StringRegistry.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\StringRegistry.h"
+		$File	"..\public\studio.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\game_shared\studio_shared.cpp"
+		$File	"subs.cpp"
+		$File	"sun.cpp"
+		$File	"..\game_shared\takedamageinfo.cpp"
+		$File	"tanktrain.cpp"
+		$File	"te_beamfollow.cpp"
+		$File	"te_effect_dispatch.cpp"
+		$File	"team.cpp"
+		$File	"team.h"
+		$File	"team_spawnpoint.cpp"
+		$File	"team_spawnpoint.h"
+		$File	"..\game_shared\teamplay_gamerules.cpp"
+		$File	"..\game_shared\teamplay_gamerules.h"
+		$File	"..\game_shared\tempentity.h"
+		$File	"TemplateEntities.cpp"
+		$File	"TemplateEntities.h"
+		$File	"tempmonster.cpp"
+		$File	"..\Public\terrainmod.h"
+		$File	"terrainmodmgr.cpp"
+		$File	"terrainmodmgr.h"
+		$File	"..\game_shared\terrainmodmgr_shared.h"
+		$File	"tesla.cpp"
+		$File	"..\game_shared\test_ehandle.cpp"
+		$File	"test_proxytoggle.cpp"
+		$File	"test_stressentities.cpp"
+		$File	"testfunctions.cpp"
+		$File	"TestTraceline.cpp"
+		$File	"textstatsmgr.cpp"
+		$File	"timedeventmgr.cpp"
+		$File	"trains.cpp"
+		$File	"trains.h"
+		$File	"triggers.cpp"
+		$File	"triggers.h"
+		$File	"..\game_shared\UserCmd.cpp"
+		$File	"util.cpp"
+		$File	"util.h"
+		$File	"..\game_shared\util_shared.cpp"
+		$File	"..\tier1\utlbuffer.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\utlbuffer.h"
+		$File	"..\tier1\utlsymbol.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\public\tier1\utlsymbol.h"
+		$File	"variant_t.cpp"
+		$File	"vehicle_base.cpp"
+		$File	"vehicle_baseserver.cpp"
+		$File	"vehicle_sounds.h"
+		$File	"vguiscreen.cpp"
+		$File	"vguiscreen.h"
+		$File	"..\Public\vmatrix.cpp"
+		{
+			$Configuration
+			{
+				$Compiler
+				{
+					$Create/UsePrecompiledHeader	"Not Using Precompiled Headers"
+				}
+			}
+		}
+		$File	"..\Public\vmatrix.h"
+		$File	"..\game_shared\voice_common.h"
+		$File	"..\game_shared\voice_gamemgr.cpp"
+		$File	"..\game_shared\voice_gamemgr.h"
+		$File	"waterbullet.cpp"
+		$File	"waterbullet.h"
+		$File	"WCEdit.cpp"
+		$File	"WCEdit.h"
+		$File	"..\game_shared\weapon_parse.cpp"
+		$File	"..\game_shared\weapon_parse.h"
+		$File	"..\game_shared\weapon_proficiency.cpp"
+		$File	"..\game_shared\weapon_proficiency.h"
+		$File	"world.cpp"
+		$File	"world.h"
+		$Folder	"Precompiled Header"
+		{
+			$File	"stdafx.cpp"
+			{
+				$Configuration
+				{
+					$Compiler
+					{
+						$Create/UsePrecompiledHeader	"Create Precompiled Header (/Yc)"
+					}
+				}
+			}
+		}
+
+		$Folder	"temporary entities"
+		{
+			$File	"basetempentity.cpp"
+			$File	"event_tempentity_tester.cpp"
+			$File	"movie_explosion.cpp"
+			$File	"particle_fire.cpp"
+			$File	"particle_smokegrenade.cpp"
+			$File	"plasma.cpp"
+			$File	"plasma.h"
+			$File	"smoke_trail.cpp"
+			$File	"smoke_trail.h"
+			$File	"SmokeStack.cpp"
+			$File	"SmokeStack.h"
+			$File	"..\game_shared\SpriteTrail.cpp"
+			$File	"steamjet.cpp"
+			$File	"steamjet.h"
+			$File	"te.cpp"
+			$File	"te.h"
+			$File	"te_armorricochet.cpp"
+			$File	"te_basebeam.cpp"
+			$File	"te_basebeam.h"
+			$File	"te_beamentpoint.cpp"
+			$File	"te_beaments.cpp"
+			$File	"te_beamlaser.cpp"
+			$File	"te_beampoints.cpp"
+			$File	"te_beamring.cpp"
+			$File	"te_beamringpoint.cpp"
+			$File	"te_beamspline.cpp"
+			$File	"te_bloodsprite.cpp"
+			$File	"te_bloodstream.cpp"
+			$File	"te_breakmodel.cpp"
+			$File	"te_bspdecal.cpp"
+			$File	"te_bubbles.cpp"
+			$File	"te_bubbletrail.cpp"
+			$File	"te_decal.cpp"
+			$File	"te_dynamiclight.cpp"
+			$File	"te_energysplash.cpp"
+			$File	"te_explosion.cpp"
+			$File	"te_fizz.cpp"
+			$File	"te_footprintdecal.cpp"
+			$File	"hl2_dll\te_gaussexplosion.cpp"
+			$File	"te_GlassShatter.cpp"
+			$File	"te_glowsprite.cpp"
+			$File	"te_impact.cpp"
+			$File	"te_killplayerattachments.cpp"
+			$File	"te_largefunnel.cpp"
+			$File	"te_muzzleflash.cpp"
+			$File	"te_particlesystem.cpp"
+			$File	"te_particlesystem.h"
+			$File	"te_physicsprop.cpp"
+			$File	"te_playerdecal.cpp"
+			$File	"te_projecteddecal.cpp"
+			$File	"te_showline.cpp"
+			$File	"te_smoke.cpp"
+			$File	"te_sparks.cpp"
+			$File	"te_sprite.cpp"
+			$File	"te_spritespray.cpp"
+			$File	"te_worlddecal.cpp"
+			$File	"..\game_shared\usermessages.cpp"
+		}
+
+		$Folder	"HL2 DLL"
+		{
+			$File	"hl2_dll\ai_behavior_police.h"
+			$File	"hl2_dll\ai_goal_police.h"
+			$File	"hl2_dll\antlion_maker.h"
+			$File	"..\game_shared\hl2\citadel_effects_shared.h"
+			$File	"hl2_dll\energy_wave.h"
+			$File	"..\game_shared\hl2\env_alyxemp_shared.h"
+			$File	"hl2_dll\npc_metropolice.h"
+			$File	"hl2_dll\npc_playercompanion.h"
+			$File	"hl2_dll\prop_combine_ball.h"
+			$File	"hl2_dll\script_intro.h"
+			$File	"hl2_dll\vehicle_crane.h"
+			$File	"hl2_dll\WaterLODControl.cpp"
+			$File	"hl2_dll\weapon_crowbar.h"
+			$File	"hl2_dll\weapon_physcannon.h"
+			$File	"hl2_dll\weapon_stunstick.h"
+			$Folder	"unused"
+			{
+				$File	"hl2_dll\grenade_hopwire.h"
+			}
+
+		}
+
+		$Folder	"SDK"
+		{
+			$File	"..\game_shared\sdk\sdk_basegrenade_projectile.cpp"
+			$File	"..\game_shared\sdk\sdk_basegrenade_projectile.h"
+			$File	"sdk\sdk_brushentity.cpp"
+			$File	"sdk\sdk_client.cpp"
+			$File	"sdk\sdk_env_message.cpp"
+			$File	"sdk\sdk_env_sparkler.cpp"
+			$File	"sdk\sdk_eventlog.cpp"
+			$File	"..\game_shared\sdk\sdk_fx_shared.cpp"
+			$File	"..\game_shared\sdk\sdk_fx_shared.h"
+			$File	"sdk\sdk_gameinterface.cpp"
+			$File	"..\game_shared\sdk\sdk_gamemovement.cpp"
+			$File	"..\game_shared\sdk\sdk_gamerules.cpp"
+			$File	"..\game_shared\sdk\sdk_gamerules.h"
+			$File	"sdk\sdk_logicalentity.cpp"
+			$File	"sdk\sdk_modelentity.cpp"
+			$File	"sdk\sdk_player.cpp"
+			$File	"sdk\sdk_player.h"
+			$File	"..\game_shared\sdk\sdk_player_shared.cpp"
+			$File	"..\game_shared\sdk\sdk_playeranimstate.cpp"
+			$File	"..\game_shared\sdk\sdk_playeranimstate.h"
+			$File	"sdk\sdk_playermove.cpp"
+			$File	"..\game_shared\sdk\sdk_shareddefs.h"
+			$File	"sdk\sdk_team.cpp"
+			$File	"sdk\sdk_team.h"
+			$File	"..\game_shared\sdk\sdk_usermessages.cpp"
+			$File	"sdk\sdk_vehicle_jeep.cpp"
+			$File	"..\game_shared\sdk\sdk_weapon_parse.cpp"
+			$File	"..\game_shared\sdk\sdk_weapon_parse.h"
+			$File	"sdk\te_firebullets.cpp"
+			$File	"sdk\te_firebullets.h"
+			$File	"..\game_shared\sdk\weapon_basesdkgrenade.cpp"
+			$File	"..\game_shared\sdk\weapon_basesdkgrenade.h"
+			$File	"..\game_shared\sdk\weapon_grenade.cpp"
+			$File	"..\game_shared\sdk\weapon_mp5.cpp"
+			$File	"..\game_shared\sdk\weapon_sdkbase.cpp"
+			$File	"..\game_shared\sdk\weapon_sdkbase.h"
+			$File	"..\game_shared\sdk\weapon_shotgun.cpp"
+		}
+
+	}
+
+	$Folder	"Header Files"
+	{
+		$File	"..\Public\amd3dx.h"
+		$File	"..\game_shared\ammodef.h"
+		$File	"..\game_shared\base_playeranimstate.h"
+		$File	"base_transmit_proxy.h"
+		$File	"..\public\basehandle.h"
+		$File	"basetempentity.h"
+		$File	"..\Public\basetypes.h"
+		$File	"..\game_shared\beam_flags.h"
+		$File	"..\public\tier1\bitbuf.h"
+		$File	"..\Public\bitvec.h"
+		$File	"..\public\bone_accessor.h"
+		$File	"..\Public\BSPFILE.H"
+		$File	"..\Public\bspflags.h"
+		$File	"..\Public\bumpvects.h"
+		$File	"..\Public\cache_user.h"
+		$File	"..\public\tier1\characterset.h"
+		$File	"..\public\tier1\checksum_md5.h"
+		$File	"..\Public\client_class.h"
+		$File	"..\public\client_textmessage.h"
+		$File	"..\Public\cmodel.h"
+		$File	"..\public\vphysics\collision_set.h"
+		$File	"..\public\Color.h"
+		$File	"..\Public\commonmacros.h"
+		$File	"..\public\compressed_light_cube.h"
+		$File	"..\public\compressed_vector.h"
+		$File	"..\Public\const.h"
+		$File	"..\public\vphysics\constraints.h"
+		$File	"..\Public\coordsize.h"
+		$File	"cplane.h"
+		// MISSING ON DISK: $File	"cstrike\cs_bot_temp.h"
+		$File	"damagemodifier.h"
+		$File	"..\Public\datamap.h"
+		$File	"..\public\tier0\dbg.h"
+		$File	"..\game_shared\decals.h"
+		$File	"..\Public\dlight.h"
+		$File	"..\public\dt_common.h"
+		$File	"..\public\dt_recv.h"
+		$File	"..\public\dt_send.h"
+		$File	"..\public\dt_utlvector_common.h"
+		$File	"..\public\dt_utlvector_send.h"
+		$File	"..\game_shared\effect_dispatch_data.h"
+		$File	"..\game_shared\ehandle.h"
+		$File	"..\game_shared\entitydatainstantiator.h"
+		$File	"..\game_shared\entitylist_base.h"
+		$File	"EventLog.h"
+		$File	"..\game_shared\ExpressionSample.h"
+		$File	"..\public\tier0\fasttimer.h"
+		$File	"..\Public\FileSystem.h"
+		$File	"..\public\filesystem_helpers.h"
+		$File	"..\public\tier1\fmtstr.h"
+		$File	"fogcontroller.h"
+		$File	"..\public\vphysics\friction.h"
+		$File	"..\game_shared\func_ladder.h"
+		$File	"..\game_shared\gameeventdefs.h"
+		$File	"..\game_shared\gamerules_register.h"
+		$File	"..\public\gametrace.h"
+		$File	"globals.h"
+		$File	"..\public\globalvars_base.h"
+		$File	"..\game_shared\groundlink.h"
+		$File	"..\public\appframework\IAppSystem.h"
+		$File	"..\Public\icliententity.h"
+		$File	"..\public\iclientnetworkable.h"
+		$File	"..\Public\iclientrenderable.h"
+		$File	"..\public\iclientunknown.h"
+		$File	"..\public\engine\ICollideable.h"
+		$File	"..\public\vstdlib\ICommandLine.h"
+		$File	"..\Public\icvar.h"
+		$File	"..\game_shared\IEffects.h"
+		$File	"..\Public\engine\IEngineSound.h"
+		$File	"..\public\engine\IEngineTrace.h"
+		$File	"..\public\igameevents.h"
+		$File	"..\game_shared\igamemovement.h"
+		$File	"..\public\ihandleentity.h"
+		$File	"..\public\ihltv.h"
+		$File	"..\public\ihltvdirector.h"
+		$File	"..\public\vstdlib\IKeyValuesSystem.h"
+		$File	"ilagcompensationmanager.h"
+		$File	"..\public\vgui\ILocalize.h"
+		$File	"..\Public\ImageLoader.h"
+		$File	"..\public\materialsystem\imaterial.h"
+		$File	"..\public\materialsystem\imaterialsystem.h"
+		$File	"..\public\materialsystem\imaterialvar.h"
+		$File	"..\game_shared\imovehelper.h"
+		$File	"..\game_shared\in_buttons.h"
+		$File	"..\public\inetchannelinfo.h"
+		$File	"..\game_shared\iplayeranimstate.h"
+		$File	"..\game_shared\ipredictionsystem.h"
+		$File	"..\public\irecipientfilter.h"
+		$File	"..\public\isaverestore.h"
+		$File	"..\public\iscratchpad3d.h"
+		$File	"..\Public\iserverentity.h"
+		$File	"..\public\iservernetworkable.h"
+		$File	"..\public\iserverunknown.h"
+		$File	"..\Public\soundemittersystem\isoundemittersystembase.h"
+		$File	"..\Public\ISpatialPartition.h"
+		$File	"..\public\engine\IStaticPropMgr.h"
+		$File	"..\game_shared\itempents.h"
+		$File	"..\Public\engine\ivdebugoverlay.h"
+		$File	"..\game_shared\IVehicle.h"
+		$File	"..\public\engine\IVEngineCache.h"
+		$File	"..\public\engine\ivmodelinfo.h"
+		$File	"..\public\tier1\KeyValues.h"
+		$File	"..\public\tier0\l2cache.h"
+		$File	"logicrelay.h"
+		$File	"..\public\map_utils.h"
+		$File	"mapentities.h"
+		$File	"..\game_shared\mapentities_shared.h"
+		$File	"..\public\tier0\mem.h"
+		$File	"..\public\tier0\memalloc.h"
+		$File	"..\public\tier0\memdbgoff.h"
+		$File	"..\public\tier0\memdbgon.h"
+		$File	"modelentities.h"
+		$File	"..\game_shared\movevars_shared.h"
+		$File	"..\public\networkvar.h"
+		$File	"npc_vehicledriver.h"
+		$File	"..\game_shared\npcevent.h"
+		$File	"..\public\vphysics\object_hash.h"
+		$File	"physics_cannister.h"
+		$File	"physics_fx.h"
+		$File	"physics_impact_damage.h"
+		$File	"..\public\tier0\platform.h"
+		$File	"..\public\vphysics\player_controller.h"
+		$File	"playerinfomanager.h"
+		$File	"..\game_shared\playernet_vars.h"
+		$File	"..\public\PlayerState.h"
+		$File	"..\game_shared\precipitation_shared.h"
+		$File	"..\game_shared\predictable_entity.h"
+		$File	"..\game_shared\predictioncopy.h"
+		$File	"..\public\tier1\processor_detect.h"
+		$File	"..\game_shared\props_shared.h"
+		$File	"..\public\protected_things.h"
+		$File	"..\public\vstdlib\random.h"
+		$File	"..\public\tier1\resourcemanager.h"
+		$File	"..\game_shared\rope_helpers.h"
+		$File	"..\game_shared\saverestore_stringtable.h"
+		$File	"..\game_shared\saverestore_utlclass.h"
+		$File	"..\game_shared\saverestore_utlmap.h"
+		$File	"..\game_shared\saverestore_utlrbtree.h"
+		$File	"..\public\saverestoretypes.h"
+		$File	"..\Public\ScratchPad3D.h"
+		$File	"scratchpad_gamedll_helpers.h"
+		$File	"..\public\ScratchPadUtils.h"
+		$File	"sendproxy.h"
+		$File	"..\Public\shake.h"
+		$File	"..\game_shared\shared_classnames.h"
+		$File	"..\game_shared\shareddefs.h"
+		$File	"..\game_shared\sharedInterface.h"
+		$File	"..\game_shared\shot_manipulator.h"
+		$File	"SkyCamera.h"
+		$File	"..\public\soundchars.h"
+		$File	"..\game_shared\soundenvelope.h"
+		$File	"..\Public\soundflags.h"
+		$File	"soundscape_system.h"
+		$File	"..\public\stdstring.h"
+		$File	"..\Public\string_t.h"
+		$File	"..\public\tier1\stringpool.h"
+		$File	"..\public\vstdlib\strtools.h"
+		$File	"..\Public\studio.h"
+		$File	"..\game_shared\sun_shared.h"
+		$File	"..\game_shared\takedamageinfo.h"
+		$File	"te_effect_dispatch.h"
+		$File	"tesla.h"
+		$File	"test_stressentities.h"
+		$File	"textstatsmgr.h"
+		$File	"..\public\texture_group_names.h"
+		$File	"timedeventmgr.h"
+		$File	"..\game_shared\usercmd.h"
+		$File	"..\game_shared\usermessages.h"
+		$File	"..\game_shared\util_shared.h"
+		$File	"..\public\UtlCachedFileData.h"
+		$File	"..\public\tier1\utldict.h"
+		$File	"..\public\tier1\utlfixedlinkedlist.h"
+		$File	"..\public\tier1\utlfixedmemory.h"
+		$File	"..\public\tier1\utlhash.h"
+		$File	"..\public\tier1\utllinkedlist.h"
+		$File	"..\public\tier1\utlmap.h"
+		$File	"..\public\tier1\utlmemory.h"
+		$File	"..\public\tier1\utlmultilist.h"
+		$File	"..\public\tier1\utlpriorityqueue.h"
+		$File	"..\public\tier1\utlrbtree.h"
+		$File	"..\public\tier1\UtlSortVector.h"
+		$File	"..\public\tier1\utlvector.h"
+		$File	"..\Public\vallocator.h"
+		$File	"variant_t.h"
+		$File	"..\Public\vcollide.h"
+		$File	"..\Public\vcollide_parse.h"
+		$File	"..\public\tier0\vcr_shared.h"
+		$File	"..\public\tier0\vcrmode.h"
+		$File	"..\Public\vector.h"
+		$File	"..\Public\vector2d.h"
+		$File	"..\Public\vector4d.h"
+		$File	"vehicle_base.h"
+		$File	"vehicle_baseserver.h"
+		$File	"..\public\vphysics\vehicles.h"
+		$File	"..\public\vgui\VGUI.h"
+		$File	"..\Public\vphysics_interface.h"
+		$File	"..\game_shared\vphysics_sound.h"
+		$File	"..\Public\vplane.h"
+		$File	"..\public\tier0\vprof.h"
+		$File	"..\public\vstdlib\vstdlib.h"
+		$File	"..\public\winlite.h"
+		$File	"..\Public\worldsize.h"
+		$File	"..\public\zip_uncompressed.h"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Implib	"$LIBPUBLIC\tier0"
+		$Implib	"$LIBPUBLIC\vstdlib"
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Files that were ExcludedFromBuild in the original vcproj (omitted above):
+//   ..\game_shared\hl2\basehlcombatweapon_shared.cpp
+//   ..\game_shared\hl2\basehlcombatweapon_shared.h
+//   ..\game_shared\hl2\env_headcrabcanister_shared.cpp
+//   ..\game_shared\hl2\env_headcrabcanister_shared.h
+//   ..\game_shared\hl2\hl2_gamerules.cpp
+//   ..\game_shared\hl2\hl2_gamerules.h
+//   ..\game_shared\hl2\hl2_player_shared.h
+//   ..\game_shared\hl2\hl2_shareddefs.h
+//   ..\game_shared\hl2\hl2_usermessages.cpp
+//   ..\game_shared\hl2\hl_gamemovement.cpp
+//   ..\game_shared\hl2\hl_movedata.h
+//   ..\game_shared\ragdoll_shared.h
+//   ..\game_shared\solidsetdefaults.h
+//   ..\game_shared\touchlink.h
+//   ..\game_shared\weapon_parse_default.cpp
+//   ai_relationship.cpp
+//   base_gameinterface.cpp
+//   BaseBludgeonWeapon.cpp
+//   BaseBludgeonWeapon.h
+//   basegrenade_concussion.cpp
+//   basegrenade_contact.cpp
+//   basegrenade_timed.cpp
+//   CRagdollMagnet.h
+//   EntityFlame.h
+//   GrenadeThrown.cpp
+//   GrenadeThrown.h
+//   h_cycler.cpp
+//   h_cycler.h
+//   hl2_dll\ai_allymanager.cpp
+//   hl2_dll\ai_behavior_actbusy.cpp
+//   hl2_dll\ai_behavior_actbusy.h
+//   hl2_dll\ai_behavior_functank.cpp
+//   hl2_dll\ai_behavior_functank.h
+//   hl2_dll\ai_behavior_holster.cpp
+//   hl2_dll\ai_behavior_holster.h
+//   hl2_dll\ai_behavior_police.cpp
+//   hl2_dll\ai_goal_police.cpp
+//   hl2_dll\AI_Interactions.h
+//   hl2_dll\ai_spotlight.cpp
+//   hl2_dll\ai_spotlight.h
+//   hl2_dll\antlion_dust.cpp
+//   hl2_dll\antlion_dust.h
+//   hl2_dll\antlion_maker.cpp
+//   hl2_dll\ar2_explosion.cpp
+//   hl2_dll\ar2_explosion.h
+//   hl2_dll\basehlcombatweapon.cpp
+//   hl2_dll\basehlcombatweapon.h
+//   hl2_dll\CBaseHelicopter.cpp
+//   hl2_dll\CBaseHelicopter.h
+//   hl2_dll\CBaseSpriteProjectile.cpp
+//   hl2_dll\CBaseSpriteProjectile.h
+//   hl2_dll\citadel_effects.cpp
+//   hl2_dll\combine_mine.cpp
+//   hl2_dll\combine_mine.h
+//   hl2_dll\env_alyxemp.cpp
+//   hl2_dll\env_headcrabcanister.cpp
+//   hl2_dll\env_speaker.cpp
+//   hl2_dll\env_starfield.cpp
+//   hl2_dll\Func_Monitor.cpp
+//   hl2_dll\func_recharge.cpp
+//   hl2_dll\func_tank.cpp
+//   hl2_dll\func_tank.h
+//   hl2_dll\grenade_ar2.cpp
+//   hl2_dll\grenade_ar2.h
+//   hl2_dll\grenade_beam.cpp
+//   hl2_dll\grenade_beam.h
+//   hl2_dll\grenade_brickbat.cpp
+//   hl2_dll\grenade_brickbat.h
+//   hl2_dll\grenade_bugbait.cpp
+//   hl2_dll\grenade_bugbait.h
+//   hl2_dll\grenade_energy.cpp
+//   hl2_dll\grenade_energy.h
+//   hl2_dll\grenade_frag.cpp
+//   hl2_dll\grenade_frag.h
+//   hl2_dll\grenade_homer.cpp
+//   hl2_dll\grenade_homer.h
+//   hl2_dll\grenade_hopwire.cpp
+//   hl2_dll\grenade_molotov.cpp
+//   hl2_dll\grenade_molotov.h
+//   hl2_dll\grenade_pathfollower.cpp
+//   hl2_dll\grenade_pathfollower.h
+//   hl2_dll\grenade_satchel.cpp
+//   hl2_dll\grenade_satchel.h
+//   hl2_dll\grenade_spit.cpp
+//   hl2_dll\grenade_spit.h
+//   hl2_dll\grenade_tripmine.cpp
+//   hl2_dll\grenade_tripmine.h
+//   hl2_dll\grenade_tripwire.cpp
+//   hl2_dll\grenade_tripwire.h
+//   hl2_dll\hl2_ai_network.cpp
+//   hl2_dll\hl2_client.cpp
+//   hl2_dll\hl2_eventlog.cpp
+//   hl2_dll\HL2_Player.cpp
+//   hl2_dll\HL2_Player.h
+//   hl2_dll\hl2_playerlocaldata.cpp
+//   hl2_dll\hl2_playerlocaldata.h
+//   hl2_dll\hl2_triggers.cpp
+//   hl2_dll\hl_playermove.cpp
+//   hl2_dll\info_teleporter_countdown.cpp
+//   hl2_dll\item_ammo.cpp
+//   hl2_dll\item_battery.cpp
+//   hl2_dll\item_dynamic_resupply.cpp
+//   hl2_dll\item_dynamic_resupply.h
+//   hl2_dll\item_healthkit.cpp
+//   hl2_dll\item_itemcrate.cpp
+//   hl2_dll\item_suit.cpp
+//   hl2_dll\look_door.cpp
+//   hl2_dll\monster_dummy.cpp
+//   hl2_dll\npc_alyx.cpp
+//   hl2_dll\npc_alyx.h
+//   hl2_dll\npc_antlion.cpp
+//   hl2_dll\npc_antlion.h
+//   hl2_dll\npc_antliongrub.cpp
+//   hl2_dll\npc_antliongrub.h
+//   hl2_dll\npc_antlionguard.cpp
+//   hl2_dll\npc_apcdriver.cpp
+//   hl2_dll\npc_assassin.cpp
+//   hl2_dll\npc_assassin.h
+//   hl2_dll\npc_attackchopper.cpp
+//   hl2_dll\npc_attackchopper.h
+//   hl2_dll\npc_Barnacle.cpp
+//   hl2_dll\npc_Barnacle.h
+//   hl2_dll\npc_Barney.cpp
+//   hl2_dll\npc_BaseZombie.cpp
+//   hl2_dll\npc_BaseZombie.h
+//   hl2_dll\npc_breen.cpp
+//   hl2_dll\npc_bullseye.cpp
+//   hl2_dll\npc_Bullseye.h
+//   hl2_dll\npc_bullsquid.cpp
+//   hl2_dll\npc_Bullsquid.h
+//   hl2_dll\npc_citizen17.cpp
+//   hl2_dll\npc_citizen17.h
+//   hl2_dll\npc_Combine.cpp
+//   hl2_dll\npc_Combine.h
+//   hl2_dll\npc_combinecamera.cpp
+//   hl2_dll\npc_combinedropship.cpp
+//   hl2_dll\npc_combinegunship.cpp
+//   hl2_dll\npc_CombineS.cpp
+//   hl2_dll\npc_CombineS.h
+//   hl2_dll\npc_cranedriver.cpp
+//   hl2_dll\npc_crow.cpp
+//   hl2_dll\npc_crow.h
+//   hl2_dll\npc_dog.cpp
+//   hl2_dll\npc_eli.cpp
+//   hl2_dll\npc_EnemyFinder.cpp
+//   hl2_dll\npc_fastzombie.cpp
+//   hl2_dll\npc_gman.cpp
+//   hl2_dll\npc_Headcrab.cpp
+//   hl2_dll\npc_Headcrab.h
+//   hl2_dll\npc_Houndeye.h
+//   hl2_dll\npc_hydra.cpp
+//   hl2_dll\npc_hydra.h
+//   hl2_dll\NPC_Ichthyosaur.cpp
+//   hl2_dll\npc_kleiner.cpp
+//   hl2_dll\npc_launcher.cpp
+//   hl2_dll\npc_Manhack.cpp
+//   hl2_dll\npc_Manhack.h
+//   hl2_dll\npc_metropolice.cpp
+//   hl2_dll\npc_missiledefense.cpp
+//   hl2_dll\npc_monk.cpp
+//   hl2_dll\npc_mossman.cpp
+//   hl2_dll\npc_playercompanion.cpp
+//   hl2_dll\npc_PoisonZombie.cpp
+//   hl2_dll\npc_rollermine.cpp
+//   hl2_dll\npc_rollermine.h
+//   hl2_dll\npc_Scanner.cpp
+//   hl2_dll\npc_Spotlight.cpp
+//   hl2_dll\npc_stalker.cpp
+//   hl2_dll\npc_stalker.h
+//   hl2_dll\npc_strider.cpp
+//   hl2_dll\npc_strider.h
+//   hl2_dll\npc_turret_ceiling.cpp
+//   hl2_dll\npc_turret_floor.cpp
+//   hl2_dll\npc_turret_ground.cpp
+//   hl2_dll\npc_Vortigaunt.cpp
+//   hl2_dll\npc_Vortigaunt.h
+//   hl2_dll\npc_zombie.cpp
+//   hl2_dll\player_control.cpp
+//   hl2_dll\player_control.h
+//   hl2_dll\player_manhack.cpp
+//   hl2_dll\player_missile.cpp
+//   hl2_dll\point_apc_controller.cpp
+//   hl2_dll\prop_combine_ball.cpp
+//   hl2_dll\prop_thumper.cpp
+//   hl2_dll\proto_sniper.cpp
+//   hl2_dll\rotorwash.cpp
+//   hl2_dll\rotorwash.h
+//   hl2_dll\script_intro.cpp
+//   hl2_dll\trigger_super_armor.cpp
+//   hl2_dll\vehicle_airboat.cpp
+//   hl2_dll\vehicle_apc.cpp
+//   hl2_dll\vehicle_apc.h
+//   hl2_dll\vehicle_cannon.cpp
+//   hl2_dll\vehicle_crane.cpp
+//   hl2_dll\vehicle_jeep.cpp
+//   hl2_dll\vehicle_prisoner_pod.cpp
+//   hl2_dll\vehicle_viewcontroller.cpp
+//   hl2_dll\weapon_357.cpp
+//   hl2_dll\weapon_alyxgun.cpp
+//   hl2_dll\weapon_alyxgun.h
+//   hl2_dll\weapon_annabelle.cpp
+//   hl2_dll\weapon_ar1.cpp
+//   hl2_dll\weapon_ar2.cpp
+//   hl2_dll\weapon_ar2.h
+//   hl2_dll\weapon_brickbat.cpp
+//   hl2_dll\weapon_brickbat.h
+//   hl2_dll\weapon_bugbait.cpp
+//   hl2_dll\weapon_cguard.cpp
+//   hl2_dll\weapon_citizenpackage.cpp
+//   hl2_dll\weapon_crossbow.cpp
+//   hl2_dll\weapon_crowbar.cpp
+//   hl2_dll\weapon_flaregun.cpp
+//   hl2_dll\weapon_flaregun.h
+//   hl2_dll\weapon_frag.cpp
+//   hl2_dll\weapon_gauss.cpp
+//   hl2_dll\weapon_gauss.h
+//   hl2_dll\weapon_hopwire.cpp
+//   hl2_dll\weapon_immolator.cpp
+//   hl2_dll\weapon_irifle.cpp
+//   hl2_dll\weapon_manhack.cpp
+//   hl2_dll\weapon_molotov.cpp
+//   hl2_dll\weapon_molotov.h
+//   hl2_dll\weapon_physcannon.cpp
+//   hl2_dll\weapon_pistol.cpp
+//   hl2_dll\weapon_rpg.cpp
+//   hl2_dll\weapon_rpg.h
+//   hl2_dll\weapon_shotgun.cpp
+//   hl2_dll\weapon_slam.cpp
+//   hl2_dll\weapon_slam.h
+//   hl2_dll\weapon_smg1.cpp
+//   hl2_dll\weapon_smg2.cpp
+//   hl2_dll\weapon_stunstick.cpp
+//   hl2_dll\weapon_thumper.cpp
+//   hl2_dll\weapon_tripwire.cpp
+//   hl2_dll\weapon_tripwire.h
+//   monstermaker.cpp
+//   monstermaker.h
+//   npc_Talker.cpp
+//   npc_Talker.h
+//   physics_bone_follower.h
+//   weapon_cubemap.cpp

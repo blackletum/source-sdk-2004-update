@@ -1,0 +1,48 @@
+//-----------------------------------------------------------------------------
+//	GROUPS.VGC
+//
+//	Group Configurations for the 2004 SDK (HL2 branch)
+//-----------------------------------------------------------------------------
+
+///////////////////////
+// Group definitions //
+///////////////////////
+
+// Just the two game DLLs
+$Group "gamedlls"
+{
+	"client"
+	"server"
+}
+
+// What it takes to build the game binaries (client.dll + server.dll for the games selected on
+// the vpc command line) - creategameprojects.bat builds this for HL2 only.
+$Group "game"
+{
+	"client"
+	"server"
+	"vgui_controls"
+}
+
+// Every project of the original SDK solutions - createallprojects.bat builds this for HL2 and SDK.
+$Group "everything"
+{
+	"client"
+	"glview"
+	"height2normal"
+	"server"
+	"serverplugin_empty"
+	"studiomdl"
+	"tgadiff"
+	"vbsp"
+	"vgui_controls"
+	"vice"
+	"vprojtomake"
+	"vrad"
+	"vrad_launcher"
+	"vtf2tga"
+	"vtfdiff"
+	"vvis"
+	"vvis_launcher"
+	"xwad"
+}

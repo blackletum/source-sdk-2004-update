@@ -1,0 +1,27 @@
+//-----------------------------------------------------------------------------
+//	DEFAULT.VGC
+//
+//	Configurations for all Source(TM) Projects
+//
+//	Source SDK 2004 (HL2 branch) - project generation scripts.
+//	Adapted from the 2013 SDK's VPC layout. See src_mod\vpc_scripts\README_2004_VPC.txt
+//-----------------------------------------------------------------------------
+
+////////////////
+// Game Names //
+////////////////
+
+// HL2 = Half-Life 2 (Game_HL2.sln)
+// SDK = the multiplayer template mod (Game_SDK.sln / the "client" + "hl" projects of Everything_SDK.sln)
+$Games
+{
+	"HL2"
+	"SDK"
+}
+
+// Makes the VPC scripts work in the SDK's context
+// (skips Valve-internal steps: Perforce checkout, code signing, etc.)
+$Conditional "SOURCESDK" "1"
+
+$Include "vpc_scripts\projects.vgc"
+$Include "vpc_scripts\groups.vgc"

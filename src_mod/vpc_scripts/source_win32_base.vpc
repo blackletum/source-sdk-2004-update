@@ -1,0 +1,30 @@
+//-----------------------------------------------------------------------------
+//	SOURCE_WIN32_BASE.VPC
+//
+//	Settings common to all Win32 projects (DLLs and static libs).
+//
+//	Toolset note: the 2004 SDK is built with the VS2013 compiler (v120_xp).
+//	The .vcxproj files can be opened from VS2013 or from VS2022 with the
+//	v120 toolset installed.
+//-----------------------------------------------------------------------------
+
+$Configuration
+{
+	$General
+	{
+		// Request a specific compiler toolset.
+		$PlatformToolset "v110_xp" [$VS2012]
+		$PlatformToolset "v120_xp" [$VS2013]
+	}
+
+	$Compiler
+	{
+		$MultiProcessorCompilation "True"
+
+		// warning C4316: object allocated on the heap may not be aligned 16
+		$DisableSpecificWarnings	"$BASE;4316" [$VS2013]
+
+		// NOTE: warnings are deliberately NOT treated as errors here. The 2004 code
+		// base predates this compiler by a decade and produces many warnings.
+	}
+}

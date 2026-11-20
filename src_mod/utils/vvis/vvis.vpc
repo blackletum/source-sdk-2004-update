@@ -1,0 +1,144 @@
+//-----------------------------------------------------------------------------
+//	VVIS.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/vvis/vvis.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"vvis"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+// Conversion notes:
+//   - Include dir '..\vmpi\mysql\include' dropped: it does not exist on disk (resolves outside / to a missing folder; copy/paste leftover in the 2004 vcproj)
+//   - 1 file(s) referenced by the vcproj do not exist on disk (listed as comments below)
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\common;..\..\public;..\..\public\tier1;..\vmpi"
+		$PreprocessorDefinitions		"$BASE;WIN32;MPI;PROTECTED_THINGS_DISABLE"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+}
+
+$Configuration "Debug"
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions	"$BASE;WINDOWS"
+	}
+
+	$Linker
+	{
+		$AdditionalDependencies	"$BASE odbc32.lib odbccp32.lib ws2_32.lib"
+	}
+}
+
+$Configuration "Release"
+{
+	$Linker
+	{
+		$AdditionalDependencies	"$BASE ws2_32.lib"
+	}
+}
+
+$Project	"vvis"
+{
+	$Folder	"Source Files"
+	{
+		$File	"..\common\bsplib.cpp"
+		$File	"..\..\tier1\characterset.cpp"
+		$File	"..\..\tier1\checksum_crc.cpp"
+		$File	"..\..\tier1\checksum_md5.cpp"
+		$File	"..\common\cmdlib.cpp"
+		$File	"..\..\public\collisionutils.cpp"
+		$File	"..\..\public\filesystem_helpers.cpp"
+		$File	"flow.cpp"
+		$File	"..\..\tier1\interface.cpp"
+		$File	"..\..\tier1\KeyValues.cpp"
+		$File	"..\..\Public\Mathlib.cpp"
+		$File	"..\common\mpi_stats.cpp"
+		$File	"mpivis.cpp"
+		$File	"..\common\MySqlDatabase.cpp"
+		$File	"..\common\pacifier.cpp"
+		$File	"..\common\scriplib.cpp"
+		$File	"..\common\threads.cpp"
+		$File	"..\..\tier1\utlbuffer.cpp"
+		$File	"..\..\tier1\utlsymbol.cpp"
+		$File	"..\common\vmpi_tools_shared.cpp"
+		$File	"vvis.cpp"
+		$File	"WaterDist.cpp"
+	}
+
+	$Folder	"Header Files"
+	{
+		$File	"..\..\Public\amd3dx.h"
+		$File	"..\..\Public\basetypes.h"
+		$File	"..\..\Public\BSPFILE.H"
+		$File	"..\..\Public\bspflags.h"
+		$File	"..\common\bsplib.h"
+		$File	"..\..\Public\BSPTreeData.h"
+		$File	"..\..\Public\bumpvects.h"
+		$File	"..\..\public\tier1\checksum_crc.h"
+		$File	"..\..\public\tier1\checksum_md5.h"
+		$File	"..\common\cmdlib.h"
+		$File	"..\..\Public\cmodel.h"
+		$File	"..\..\Public\commonmacros.h"
+		$File	"..\..\Public\GameBSPFile.h"
+		$File	"..\common\ISQLDBReplyTarget.h"
+		// MISSING ON DISK: $File	"..\common\ivvisdll.h"
+		$File	"..\..\Public\MATHLIB.H"
+		$File	"mpivis.h"
+		$File	"..\common\MySqlDatabase.h"
+		$File	"..\common\pacifier.h"
+		$File	"..\common\scriplib.h"
+		$File	"..\..\public\vstdlib\strtools.h"
+		$File	"..\common\threads.h"
+		$File	"..\..\public\tier1\utlbuffer.h"
+		$File	"..\..\public\tier1\utllinkedlist.h"
+		$File	"..\..\public\tier1\utlmemory.h"
+		$File	"..\..\public\tier1\utlrbtree.h"
+		$File	"..\..\public\tier1\utlsymbol.h"
+		$File	"..\..\public\tier1\utlvector.h"
+		$File	"..\..\Public\vcollide.h"
+		$File	"..\..\Public\vector.h"
+		$File	"..\..\Public\vector2d.h"
+		$File	"vis.h"
+		$File	"..\vmpi\vmpi_distribute_work.h"
+		$File	"..\common\vmpi_tools_shared.h"
+		$File	"..\..\public\vstdlib\vstdlib.h"
+		$File	"..\..\Public\wadtypes.h"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Implib	"$LIBPUBLIC\tier0"
+		$Lib		"$SRCDIR\lib\vmpi\vmpi"
+		$Implib	"$LIBPUBLIC\vstdlib"
+	}
+}
+

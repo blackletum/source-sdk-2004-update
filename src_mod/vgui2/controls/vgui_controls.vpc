@@ -1,0 +1,163 @@
+//-----------------------------------------------------------------------------
+//	VGUI_CONTROLS.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from vgui2/controls/vgui_controls.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTLIBNAME	"vgui_controls"
+
+$Include "$SRCDIR\vpc_scripts\source_lib_base.vpc"
+
+// Conversion notes:
+//   - link-library entries in the vcproj ignored (static lib)
+//   - 1 file(s) referenced by the vcproj do not exist on disk (listed as comments below)
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\..\public;..\..\public\tier1"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+}
+
+$Project	"vgui_controls"
+{
+	$Folder	"Header Files"
+	{
+		$File	"..\..\public\vgui_controls\AnimatingImagePanel.h"
+		$File	"..\..\Public\vgui_controls\AnimationController.h"
+		$File	"..\..\public\vgui_controls\BitmapImagePanel.h"
+		$File	"..\..\public\vgui_controls\BuildGroup.h"
+		$File	"..\..\public\vgui_controls\BuildModeDialog.h"
+		$File	"..\..\public\vgui_controls\Button.h"
+		$File	"..\..\public\vgui_controls\CheckButton.h"
+		$File	"..\..\public\vgui_controls\CheckButtonList.h"
+		// MISSING ON DISK: $File	"..\..\public\vgui\Color.h"
+		$File	"..\..\public\vgui_controls\ComboBox.h"
+		$File	"..\..\public\vgui_controls\Controls.h"
+		$File	"..\..\public\vgui_controls\DialogManager.h"
+		$File	"..\..\public\vgui_controls\DirectorySelectDialog.h"
+		$File	"..\..\public\vgui_controls\Divider.h"
+		$File	"..\..\public\vgui_controls\EditablePanel.h"
+		$File	"..\..\public\vgui_controls\FileOpenDialog.h"
+		$File	"..\..\Public\FileSystem.h"
+		$File	"..\..\public\filesystem_helpers.h"
+		$File	"..\..\public\vgui_controls\FocusNavGroup.h"
+		$File	"..\..\public\vgui_controls\Frame.h"
+		$File	"..\..\public\vgui_controls\GraphPanel.h"
+		$File	"..\..\public\vgui_controls\HTML.h"
+		$File	"..\..\public\vgui_controls\Image.h"
+		$File	"..\..\public\vgui_controls\ImageList.h"
+		$File	"..\..\public\vgui_controls\ImagePanel.h"
+		$File	"..\..\public\tier1\interface.h"
+		$File	"..\..\public\tier1\KeyValues.h"
+		$File	"..\..\public\vgui_controls\Label.h"
+		$File	"..\..\public\vgui_controls\ListPanel.h"
+		$File	"..\..\public\vgui_controls\ListViewPanel.h"
+		$File	"..\..\public\tier0\memdbgoff.h"
+		$File	"..\..\public\tier0\memdbgon.h"
+		$File	"..\..\public\tier1\mempool.h"
+		$File	"..\..\public\vgui_controls\Menu.h"
+		$File	"..\..\public\vgui_controls\MenuBar.h"
+		$File	"..\..\public\vgui_controls\MenuButton.h"
+		$File	"..\..\public\vgui_controls\MenuItem.h"
+		$File	"..\..\public\vgui_controls\MessageBox.h"
+		$File	"..\..\public\vgui_controls\Panel.h"
+		$File	"..\..\public\vgui_controls\PanelAnimationVar.h"
+		$File	"..\..\public\vgui_controls\PanelListPanel.h"
+		$File	"..\..\public\vgui_controls\PHandle.h"
+		$File	"..\..\public\vgui_controls\ProgressBar.h"
+		$File	"..\..\public\vgui_controls\ProgressBox.h"
+		$File	"..\..\public\vgui_controls\PropertyDialog.h"
+		$File	"..\..\public\vgui_controls\PropertyPage.h"
+		$File	"..\..\public\vgui_controls\PropertySheet.h"
+		$File	"..\..\public\vgui_controls\QueryBox.h"
+		$File	"..\..\public\vgui_controls\RadioButton.h"
+		$File	"..\..\public\vgui_controls\RichText.h"
+		$File	"..\..\public\vgui_controls\ScrollBar.h"
+		$File	"..\..\public\vgui_controls\ScrollBarSlider.h"
+		$File	"..\..\public\vgui_controls\SectionedListPanel.h"
+		$File	"..\..\public\vgui_controls\Slider.h"
+		$File	"..\..\public\vgui_controls\TextEntry.h"
+		$File	"..\..\public\vgui_controls\TextImage.h"
+		$File	"..\..\public\vgui_controls\ToggleButton.h"
+		$File	"..\..\public\vgui_controls\Tooltip.h"
+		$File	"..\..\public\vgui_controls\TreeView.h"
+		$File	"..\..\public\vgui_controls\TreeViewListControl.h"
+		$File	"..\..\public\vgui_controls\URLLabel.h"
+		$File	"..\..\public\tier1\utlmemory.h"
+		$File	"..\..\public\tier1\utlrbtree.h"
+		$File	"..\..\public\tier1\utlvector.h"
+		$File	"..\..\public\vgui_controls\WizardPanel.h"
+		$File	"..\..\public\vgui_controls\WizardSubPanel.h"
+	}
+
+	$Folder	"Source Files"
+	{
+		$File	"AnimatingImagePanel.cpp"
+		$File	"AnimationController.cpp"
+		$File	"BitmapImagePanel.cpp"
+		$File	"BuildGroup.cpp"
+		$File	"BuildModeDialog.cpp"
+		$File	"Button.cpp"
+		$File	"..\..\tier1\characterset.cpp"
+		$File	"CheckButton.cpp"
+		$File	"CheckButtonList.cpp"
+		$File	"ComboBox.cpp"
+		$File	"controls.cpp"
+		$File	"DirectorySelectDialog.cpp"
+		$File	"Divider.cpp"
+		$File	"EditablePanel.cpp"
+		$File	"FileOpenDialog.cpp"
+		$File	"..\..\Public\filesystem_helpers.cpp"
+		$File	"FocusNavGroup.cpp"
+		$File	"Frame.cpp"
+		$File	"GraphPanel.cpp"
+		$File	"HTML.cpp"
+		$File	"Image.cpp"
+		$File	"ImageList.cpp"
+		$File	"ImagePanel.cpp"
+		$File	"..\..\tier1\KeyValues.cpp"
+		$File	"Label.cpp"
+		$File	"ListPanel.cpp"
+		$File	"ListViewPanel.cpp"
+		$File	"..\..\tier1\mempool.cpp"
+		$File	"Menu.cpp"
+		$File	"MenuBar.cpp"
+		$File	"MenuButton.cpp"
+		$File	"MenuItem.cpp"
+		$File	"MessageBox.cpp"
+		$File	"Panel.cpp"
+		$File	"PanelListPanel.cpp"
+		$File	"ProgressBar.cpp"
+		$File	"ProgressBox.cpp"
+		$File	"PropertyDialog.cpp"
+		$File	"PropertyPage.cpp"
+		$File	"PropertySheet.cpp"
+		$File	"QueryBox.cpp"
+		$File	"RadioButton.cpp"
+		$File	"RichText.cpp"
+		$File	"ScrollBar.cpp"
+		$File	"ScrollBarSlider.cpp"
+		$File	"SectionedListPanel.cpp"
+		$File	"Slider.cpp"
+		$File	"TextEntry.cpp"
+		$File	"TextImage.cpp"
+		$File	"ToggleButton.cpp"
+		$File	"Tooltip.cpp"
+		$File	"TreeView.cpp"
+		$File	"TreeViewListControl.cpp"
+		$File	"URLLabel.cpp"
+		$File	"..\..\tier1\utlbuffer.cpp"
+		$File	"..\..\tier1\utlsymbol.cpp"
+		$File	"WizardPanel.cpp"
+		$File	"WizardSubPanel.cpp"
+	}
+
+}
+

@@ -2247,7 +2247,8 @@ void *Panel::QueryInterface(EInterfaceID id)
 //-----------------------------------------------------------------------------
 MessageMapItem_t Panel::m_MessageMap[] =
 {
-	MAP_MESSAGE_INT( Panel, "RequestFocus", RequestFocus, "direction" )
+	// same as MAP_MESSAGE_INT( Panel, "RequestFocus", RequestFocus, "direction" ), but with the explicit '&' newer compilers require
+	{ "RequestFocus", (vgui::MessageFunc_t)&Panel::RequestFocus, 1, vgui::DATATYPE_INT, "direction" }
 };
 
 // IMPLEMENT_PANELMAP( Panel, NULL )

@@ -1,0 +1,116 @@
+//-----------------------------------------------------------------------------
+//	VPROJTOMAKE.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/vprojtomake/vprojtomake.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"vprojtomake"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\common;..\..\public;..\..\public\tier1"
+		$PreprocessorDefinitions		"$BASE;WIN32;_CONSOLE"
+		$EnableC++Exceptions		"Yes (/EHsc)"
+	}
+
+	$Linker
+	{
+		$AdditionalDependencies	"$BASE odbc32.lib odbccp32.lib comsupp.lib msxml2.lib"
+	}
+}
+
+$Configuration "Debug"
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions	"$BASE;DEBUG"
+	}
+
+	$Linker
+	{
+		$AdditionalOptions		"$BASE /FIXED:NO"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$TargetName		"vcpm"
+	}
+
+	$Linker
+	{
+		$OutputFile			"$(OutDir)/vcpm.exe"
+	}
+}
+
+$Project	"vprojtomake"
+{
+	$Folder	"Source Files"
+	{
+		$File	"..\..\tier1\interface.cpp"
+		$File	"..\..\tier1\KeyValues.cpp"
+		$File	"makefilecreator.cpp"
+		$File	"StdAfx.cpp"
+		$File	"..\..\tier1\utlbuffer.cpp"
+		$File	"..\..\tier1\utlsymbol.cpp"
+		$File	"vcprojconvert.cpp"
+		$File	"vprojtomake.cpp"
+	}
+
+	$Folder	"Header Files"
+	{
+		$File	"..\..\Public\basetypes.h"
+		$File	"..\..\Public\tier1\characterset.h"
+		$File	"..\common\cmdlib.h"
+		$File	"..\..\Public\FileSystem.h"
+		$File	"..\..\public\tier1\KeyValues.h"
+		$File	"makefilecreator.h"
+		$File	"MsXml2.h"
+		$File	"StdAfx.h"
+		$File	"..\..\public\tier1\utlbuffer.h"
+		$File	"..\..\public\tier1\utldict.h"
+		$File	"..\..\public\tier1\utlmap.h"
+		$File	"..\..\Public\tier1\UtlMemory.h"
+		$File	"..\..\Public\tier1\utlsymbol.h"
+		$File	"..\..\public\tier1\utlvector.h"
+		$File	"vcprojconvert.h"
+		$File	"..\..\public\vstdlib\vstdlib.h"
+	}
+
+	$File	"..\..\public\appframework\IAppSystem.h"
+	$Folder	"Link Libraries"
+	{
+		$Implib	"$LIBPUBLIC\tier0"
+		$Implib	"$LIBPUBLIC\vstdlib"
+	}
+}
+

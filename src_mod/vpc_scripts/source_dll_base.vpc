@@ -1,0 +1,13 @@
+$MacroRequired		"OUTDLLEXT" "$_DLL_EXT"
+$Include "$SRCDIR\vpc_scripts\platform_dirs.vpc"
+$include "$SRCDIR\vpc_scripts\source_base.vpc"
+
+$Include "$SRCDIR\vpc_scripts\source_dll_win32_base.vpc"	[$WIN32]
+
+$Configuration
+{
+	$General
+	{
+		$TargetExtension	"$OUTDLLEXT"
+	}
+}

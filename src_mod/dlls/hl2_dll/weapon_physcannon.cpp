@@ -2477,7 +2477,7 @@ void CWeaponPhysCannon::BeginUpgrade()
 
 	m_bIsCurrentlyUpgrading = true;
 
-	SetContextThink( WaitForUpgradeThink, gpGlobals->curtime + 6.0f, s_pWaitForUpgradeContext );
+	SetContextThink( &CWeaponPhysCannon::WaitForUpgradeThink, gpGlobals->curtime + 6.0f, s_pWaitForUpgradeContext );
 
 	EmitSound( "WeaponDissolve.Charge" );
 
@@ -2499,7 +2499,7 @@ void CWeaponPhysCannon::WaitForUpgradeThink()
 	StudioFrameAdvance();
 	if ( !IsActivityFinished() )
 	{
-		SetContextThink( WaitForUpgradeThink, gpGlobals->curtime + 0.1f, s_pWaitForUpgradeContext );
+		SetContextThink( &CWeaponPhysCannon::WaitForUpgradeThink, gpGlobals->curtime + 0.1f, s_pWaitForUpgradeContext );
 		return;
 	}
 

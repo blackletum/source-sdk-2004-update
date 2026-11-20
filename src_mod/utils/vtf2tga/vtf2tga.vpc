@@ -1,0 +1,104 @@
+//-----------------------------------------------------------------------------
+//	VTF2TGA.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/vtf2tga/vtf2tga.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"vtf2tga"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+// Conversion notes:
+//   - 1 file(s) referenced by the vcproj do not exist on disk (listed as comments below)
+
+$Configuration
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"$BASE;TGAWRITER_USE_FOPEN;WIN32;_CONSOLE"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+}
+
+$Configuration "Debug"
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\..\Public;..\..\Public\tier1"
+	}
+}
+
+$Configuration "Release"
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\..\Public;..\..\Public\tier1;..\common"
+	}
+}
+
+$Project	"vtf2tga"
+{
+	$Folder	"Source Files"
+	{
+		$File	"..\..\Public\ImageLoader.cpp"
+		$File	"..\..\Public\Mathlib.cpp"
+		$File	"..\..\Public\TGAWriter.cpp"
+		$File	"..\..\tier1\utlbuffer.cpp"
+		$File	"vtf2tga.cpp"
+	}
+
+	$Folder	"Header Files"
+	{
+		$File	"..\..\Public\amd3dx.h"
+		$File	"..\..\Public\basetypes.h"
+		$File	"..\..\Public\commonmacros.h"
+		$File	"..\..\public\tier0\dbg.h"
+		$File	"..\..\public\tier0\fasttimer.h"
+		$File	"..\..\Public\ImageLoader.h"
+		$File	"..\..\Public\MATHLIB.H"
+		$File	"..\..\public\tier0\memdbgon.h"
+		$File	"..\..\public\tier0\platform.h"
+		$File	"..\..\public\protected_things.h"
+		// MISSING ON DISK: $File	"..\..\Public\s3_intrf.h"
+		$File	"..\..\public\string_t.h"
+		$File	"..\..\public\vstdlib\strtools.h"
+		$File	"..\..\Public\TGAWriter.h"
+		$File	"..\..\public\tier1\utlbuffer.h"
+		$File	"..\..\public\tier1\utlmemory.h"
+		$File	"..\..\Public\vector.h"
+		$File	"..\..\Public\vector2d.h"
+		$File	"..\..\public\vstdlib\vstdlib.h"
+		$File	"..\..\public\vtf\vtf.h"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Implib	"$LIBPUBLIC\tier0"
+		$Implib	"$LIBPUBLIC\vstdlib"
+		$Lib		"$LIBPUBLIC\vtf"
+	}
+}
+

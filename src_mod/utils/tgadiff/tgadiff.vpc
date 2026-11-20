@@ -1,0 +1,63 @@
+//-----------------------------------------------------------------------------
+//	TGADIFF.VPC
+//
+//	Project Script - Source SDK 2004, HL2 branch
+//
+//	Converted ONCE from utils/tgadiff/tgadiff.vcproj (one-time script conversion).
+//	From now on edit THIS file; the .vcproj is only kept for reference.
+//-----------------------------------------------------------------------------
+
+$Macro SRCDIR		"..\.."
+$Macro OUTBINNAME	"tgadiff"
+$Macro OUTBINDIR		"$SRCDIR\..\game\bin"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_con_base.vpc"
+
+$Configuration "Debug"
+{
+	$General
+	{
+		$OutputDirectory		".\Debug"
+		$IntermediateDirectory	".\Debug"
+	}
+}
+
+$Configuration "Release"
+{
+	$General
+	{
+		$OutputDirectory		".\Release"
+		$IntermediateDirectory	".\Release"
+	}
+}
+
+$Configuration
+{
+	$Compiler
+	{
+		$AdditionalIncludeDirectories	"..\..\public;..\..\public\tier1"
+		$PreprocessorDefinitions		"$BASE;WIN32;_CONSOLE;TGALOADER_USE_FOPEN;TGAWRITER_USE_FOPEN"
+		// original vcproj used /YX (automatic PCH, obsolete); the base scripts use 'Not Using Precompiled Headers'
+	}
+}
+
+$Project	"tgadiff"
+{
+	$Folder	"Source Files"
+	{
+		$File	"..\..\public\imageloader.cpp"
+		$File	"..\..\public\mathlib.cpp"
+		$File	"tgadiff.cpp"
+		$File	"..\..\public\tgaloader.cpp"
+		$File	"..\..\public\tgawriter.cpp"
+		$File	"..\..\tier1\utlbuffer.cpp"
+	}
+
+	$Folder	"Link Libraries"
+	{
+		$Lib		"$LIBPUBLIC\nvtc"
+		$Implib	"$LIBPUBLIC\tier0"
+		$Implib	"$LIBPUBLIC\vstdlib"
+	}
+}
+

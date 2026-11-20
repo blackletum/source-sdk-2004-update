@@ -1,0 +1,6 @@
+$Include "$SRCDIR\vpc_scripts\platform_dirs.vpc"
+$include "$SRCDIR\vpc_scripts\source_base.vpc"
+
+$MacroRequired OUTLIBDIR	"$SRCDIR\lib\public$PLATSUBDIR"
+
+$include "$SRCDIR\vpc_scripts\source_lib_win32_base.vpc"	[$WIN32]

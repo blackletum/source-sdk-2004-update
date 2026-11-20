@@ -1,0 +1,10 @@
+//-----------------------------------------------------------------------------
+//	SOURCE_EXE_BASE.VPC
+//
+//	Include this from the project script of a Win32 GUI (windows subsystem) tool.
+//-----------------------------------------------------------------------------
+
+$Include "$SRCDIR\vpc_scripts\platform_dirs.vpc"
+$include "$SRCDIR\vpc_scripts\source_base.vpc"
+
+$Include "$SRCDIR\vpc_scripts\source_exe_win_win32_base.vpc"	[$WIN32]

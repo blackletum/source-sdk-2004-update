@@ -1,0 +1,23 @@
+//-----------------------------------------------------------------------------
+//	source_base.VPC
+//
+//	This is the base VPC file that is included by all others.
+//
+//	Project Script
+//-----------------------------------------------------------------------------
+
+$Configuration "Debug"
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"VPC"
+	}
+}
+
+$Configuration "Release"
+{
+	$Compiler
+	{
+		$PreprocessorDefinitions		"VPC"
+	}
+}

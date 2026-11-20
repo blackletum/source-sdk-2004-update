@@ -1,0 +1,54 @@
+//-----------------------------------------------------------------------------
+//	SOURCE_LIB_WIN32_BASE.VPC
+//
+//	Base Settings for all Win32 static library projects (vgui_controls)
+//-----------------------------------------------------------------------------
+
+$Include "$SRCDIR\vpc_scripts\version.vpc"
+
+$MacroRequired				"SRCDIR"
+$MacroRequired				"OUTLIBNAME"	"$PROJECTNAME"
+$MacroRequired				"OUTLIBDIR"
+
+$Macro LIBPUBLIC	"$SRCDIR\lib\public$PLATSUBDIR"
+$Macro LIBCOMMON	"$SRCDIR\lib\common$PLATSUBDIR"
+
+$Include "$SRCDIR\vpc_scripts\source_lib_win32_debug.vpc"
+$Include "$SRCDIR\vpc_scripts\source_lib_win32_release.vpc"
+$Include "$SRCDIR\vpc_scripts\source_win32_base.vpc"
+
+$IgnoreRedundancyWarning	"ON"
+
+// Common Configuration
+$Configuration
+{
+	$General
+	{
+		$TargetName	"$OUTLIBNAME"
+	}
+
+	$Compiler
+	{
+		$PreprocessorDefinitions			"$BASE;WIN32;COMPILER_MSVC32"
+		// NOTE: unlike the DLL projects, the original vgui_controls.vcproj DOES define WIN32.
+	}
+
+	$Compiler
+	{
+		$EnableEnhancedInstructionSet	"Streaming SIMD Extensions (/arch:SSE)"
+	}
+
+	$PreBuildEvent
+	{
+		// The prebuilt stub lib in lib\public is checked in; make sure it is writable before we replace it.
+		$CommandLine		"if not exist $QUOTE$OUTLIBDIR$QUOTE mkdir $QUOTE$OUTLIBDIR$QUOTE" "\n" \
+							"if exist $QUOTE$OUTLIBDIR\$(TargetName).lib$QUOTE attrib -r $QUOTE$OUTLIBDIR\$(TargetName).lib$QUOTE" "\n" \
+							"$CRCCHECK" "\n"
+	}
+
+	$Librarian
+	{
+		// Suppress this warning using the undocumented /ignore linker switch
+		$AdditionalOptions					"$BASE /ignore:4221"
+	}
+}

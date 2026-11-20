@@ -7,7 +7,7 @@
 //=============================================================================//
 #include "glos.h"
 #include <gl/gl.h>
-#include <gl/glaux.h>
+// #include <gl/glaux.h>	// not shipped with modern Windows SDKs; nothing from glaux is used in this file
 #include <gl/glu.h>
 #include <stdarg.h>
 #include <string.h>
