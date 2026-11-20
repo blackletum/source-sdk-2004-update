@@ -16,3 +16,13 @@ Original project: [blackletum/source-sdk-2004](https://github.com/blackletum/sou
 4. Pray
 
 More detailed build instructions may be added later.
+
+# Dev branch
+
+This dev branch is for my own changes to the base 2004 code to make things work with the 2006 SDK on Steam. 
+
+This utilizes the 2006 SDK game files from this repository:
+
+https://github.com/blackletum/source-sdk-2006
+
+If you happen to be wanting to use this to work on the 2004 source code, be aware that everything builds to the `hl2` folder, but you cannot have a sourcemod folder named `hl2`. 

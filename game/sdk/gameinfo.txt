@@ -1,0 +1,26 @@
+"GameInfo"
+{
+	game 		"Source 2006 (Mod SDK Sample)"
+	title 		"Source 2006"
+	title2		"Mod SDK Sample"
+	type		multiplayer_only
+	nomodels 1
+	nohimodel 1
+	nocrosshair 1
+	hidden_maps
+	{
+		"test_speakers"		1
+		"test_hardware"		1
+	}
+
+	FileSystem
+	{
+		SteamAppId				215
+		ToolsAppId				211
+		SearchPaths
+		{
+			Game				|gameinfo_path|.
+			Game				hl2
+		}
+	}
+}

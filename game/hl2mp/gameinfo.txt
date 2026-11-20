@@ -1,0 +1,27 @@
+"GameInfo"
+{
+	game 		"Source 2006 (Mod HL2MP)"
+	title	"HALF+LIFE'"
+	title2	"deathmatch"
+	type		multiplayer_only
+	nomodels 0
+	nohimodel 1
+	nocrosshair 1
+	hidden_maps
+	{
+		"test_speakers"		1
+		"test_hardware"		1
+	}
+
+	FileSystem
+	{
+		SteamAppId				215
+		ToolsAppId				211
+		SearchPaths
+		{
+			Game				|gameinfo_path|.
+			Game				hl2mp
+			Game				hl2
+		}
+	}
+}
